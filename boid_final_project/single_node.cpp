@@ -28,21 +28,28 @@ vector<Vector3f> run(int rank, int size)
 	for (int step = 0; step < STEPS; step++)
 	{
 		grid_updates.resize(0);
+
+		#pragma omp parallel for
 		for (int boid = 0; boid < BOID_NUMBER; boid++)
 		{
 
 
 			grid.UpdateNearCells(boids[boid]);
 			boids[boid].Update();
-			grid.UpdateGrid(boids[boid], grid_updates);
 			paths[PathIndice(boid, step, BOID_NUMBER)] = boids[boid].GetPosistion();
 
 		}
 
+		for (int boid = 0; boid < BOID_NUMBER; boid++)
+		{
+			grid.UpdateGrid(boids[boid], grid_updates);
+		}
+		
+
 	}
 	float end_t = MPI_Wtime();
 
-	printf("Time taken %.2f", end_t - start_t);
+	printf("(%d)Time taken %.2f\n",rank, end_t - start_t);
 	return paths;
 
 

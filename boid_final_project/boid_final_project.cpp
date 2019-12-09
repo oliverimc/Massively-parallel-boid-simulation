@@ -4,6 +4,8 @@
 #include "pch.h"
 #include "preprocessor.h"
 #include "single_node.h"
+#include "master.h"
+#include "worker.h"
 
 #include<vector>
 #include<Eigen/Dense>
@@ -66,6 +68,7 @@ void write_to_file(string name, vector<Vector3f> &paths, int steps, int boid_num
 
 int main(int argc, char* argv[])
 {
+
 	int num_nodes, rank, namelen;
 	char processor_name[MPI_MAX_PROCESSOR_NAME];
 	
@@ -74,20 +77,30 @@ int main(int argc, char* argv[])
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Get_processor_name(processor_name, &namelen);
 
+	omp_set_num_threads(THREAD_NUM);
 
 	if (num_nodes == 1)
 	{
 
 		vector<Vector3f> paths = run(rank, num_nodes);
-		write_to_file("Test2", paths, STEPS, BOID_NUMBER, rank);
+		if (SAVE) 
+		{
+			write_to_file("Test2", paths, STEPS, BOID_NUMBER, rank);
+		}
 		
 
 	}
 
-	else 
+	else if(rank ==MASTER)
 
 	{
-		print("Not yet coded");
+		vector<Vector3f> paths = run_master(rank, num_nodes);
+	}
+
+	else
+	{
+		vector<Vector3f> paths = run_worker(rank, num_nodes);
+
 	}
 
 

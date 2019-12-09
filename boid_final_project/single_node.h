@@ -7,6 +7,7 @@
 #include <mpi.h>
 #include <random>
 #include <vector>
+#include "omp.h"
 
 
 
