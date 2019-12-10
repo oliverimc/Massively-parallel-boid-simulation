@@ -8,4 +8,5 @@
 #include <iostream>
 #include <random>
 #include <math.h>
+#include <cstdio>
 vector<Vector3f> run_master(int rank, int size);

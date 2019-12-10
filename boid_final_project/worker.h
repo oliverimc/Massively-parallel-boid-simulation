@@ -7,5 +7,6 @@
 #include <vector>
 #include <iostream>
 #include <math.h>
+#include <cstdio>
 
 vector<Vector3f> run_worker(int rank, int size);

@@ -77,8 +77,10 @@ int main(int argc, char* argv[])
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Get_processor_name(processor_name, &namelen);
 
-	omp_set_num_threads(THREAD_NUM);
+	print("Initialisation Done");
 
+	omp_set_num_threads(THREAD_NUM);
+	
 	if (num_nodes == 1)
 	{
 
@@ -91,15 +93,25 @@ int main(int argc, char* argv[])
 
 	}
 
-	else if(rank ==MASTER)
+	else if(rank == MASTER)
 
 	{
 		vector<Vector3f> paths = run_master(rank, num_nodes);
+		
+		if (SAVE)
+		{
+			write_to_file("mulit-node-0", paths, STEPS, BOID_NUMBER/num_nodes+BOID_NUMBER%num_nodes, rank);
+		}
 	}
 
 	else
 	{
 		vector<Vector3f> paths = run_worker(rank, num_nodes);
+
+		if (SAVE)
+		{
+			write_to_file("multi-node-"+to_string(rank), paths, STEPS, BOID_NUMBER / num_nodes, rank);
+		}
 
 	}
 
