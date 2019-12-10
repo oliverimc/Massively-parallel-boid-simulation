@@ -36,6 +36,8 @@ vector<Vector3f> run_master(int rank, int size)
 
 	BroadcastSendBoids(boids, boid_memory, MASTER);
 
+
+
 	printf("(%d) Starting master\n", rank);
 	fflush(stdout);
 	float start_t = MPI_Wtime();
@@ -43,17 +45,19 @@ vector<Vector3f> run_master(int rank, int size)
 	{
 
 		grid_updates.resize(0);
+		
 		#pragma omp parallel for
 		for (int boid = start_index; boid < end_index; boid++)
 		{
 
+			
 			grid.UpdateNearCells(boids[boid]);
-			boids[boid].Update();
+			boids[boid].Update();			
 			paths[MultiPathIndice(boid, step, boids_per_node, start_index)] = boids[boid].GetPosistion();
 			
-
 		}
 		
+
 
 		for (int boid = start_index; boid < end_index; boid++)
 		{
@@ -100,7 +104,7 @@ vector<Vector3f> run_master(int rank, int size)
 
 	printf("(%d)Total time taken %.2f\n", rank, end_t - start_t);
 
-
+	//printf("%.2f , %.2f, %.2f, %.2f", t1, t2, t3, t4);
 
 
 	
