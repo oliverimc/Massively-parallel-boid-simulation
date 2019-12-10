@@ -3,7 +3,7 @@
 #include "boid.h"
 #include "spatial_grid.h" 
 #include "communication.h"
-#include <Eigen/Dense>
+#include "Eigen/Dense"
 #include <vector>
 #include <iostream>
 #include <math.h>

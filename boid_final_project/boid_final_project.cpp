@@ -8,7 +8,7 @@
 #include "worker.h"
 
 #include<vector>
-#include<Eigen/Dense>
+#include "Eigen/Dense"
 #include <mpi.h>
 #include <iostream>
 #include <fstream>
