@@ -18,6 +18,8 @@ using namespace Eigen;
 
 
 //https://stackoverflow.com/questions/38061067/data-race-with-stdunordered-map-despite-locking-insertions-with-mutex
+//https://github.com/AmanSachan1/CUDA-Boid-Flocking/blob/master/src/kernel.cu
+//https://github.com/chernandez7/cuda-boids/blob/master/kernel.cu
 
 void write_to_file(string name, vector<Vector3f> &paths, int steps, int boid_number, int rank)
 {
@@ -68,6 +70,8 @@ void write_to_file(string name, vector<Vector3f> &paths, int steps, int boid_num
 }
 
 
+
+
 int main(int argc, char* argv[])
 {
 
@@ -81,7 +85,7 @@ int main(int argc, char* argv[])
 
 	print("Initialisation Done");
 
-	omp_set_num_threads(THREAD_NUM);
+	omp_set_num_threads(THREAD_NUM);	
 	
 	if (num_nodes == 1)
 	{
@@ -89,7 +93,7 @@ int main(int argc, char* argv[])
 		vector<Vector3f> paths = run(rank, num_nodes);
 		if (SAVE) 
 		{
-			write_to_file("Test2", paths, STEPS, BOID_NUMBER, rank);
+			write_to_file("shark", paths, STEPS, BOID_NUMBER, rank);
 		}
 		
 

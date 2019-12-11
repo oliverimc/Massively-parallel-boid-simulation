@@ -17,10 +17,10 @@ Boid::~Boid()
 {
 }
 
-void Boid::Update()
+void Boid::Update(Vector3f &shark)
 {
     GetNearbyBoids();
-	acceleration_ = COHESION_FACTOR * Cohesion(nearby_boid_buffer_) + SEPERATION_FACTOR * Seperation(nearby_boid_buffer_) + ALIGNMENT_FACTOR * Alignment(nearby_boid_buffer_);
+	acceleration_ = COHESION_FACTOR * Cohesion(nearby_boid_buffer_) + SEPERATION_FACTOR * Seperation(nearby_boid_buffer_) + ALIGNMENT_FACTOR * Alignment(nearby_boid_buffer_) + SHARK_FACTOR * Shark(shark, SHARK_ENABLED);
 	velocity_ += acceleration_;
 	posistion_ += velocity_;
 	UpdateEdges();
@@ -116,13 +116,11 @@ void Boid::GetNearbyBoids()
 			
 			if (distance_squared != 0 && distance_squared < SEEING_DISTANCE_SQ)
 			{
-				
 				//only calculates square root for boids that are nearby to reduce number of expensive calls to Sqrt()
 				get<0>(nearby_boid_buffer_[i]) = *boid;
 				get<1>(nearby_boid_buffer_[i]) = sqrt(distance_squared);
 				i++;
 					
-
 			}
 		}
 	}
@@ -230,6 +228,44 @@ Vector3f Boid::Alignment(vector<tuple<Boid*, float>>& nearby_boids)
 	return correction_force;
 
 
+
+
+}
+
+Vector3f Boid::Shark(Vector3f & shark_pos, bool  shark_enabled)
+{
+
+	Vector3f correction_force = Vector3f::Zero();
+
+	if (!shark_enabled)
+	{
+		return correction_force;
+	}
+	else 
+	{
+		Vector3f pos_difference = posistion_ - shark_pos;
+		
+		float distance_squared = pos_difference.squaredNorm();
+
+
+
+		pos_difference /= sqrt(distance_squared);
+
+		if (pos_difference.squaredNorm() > 0)
+		{
+			pos_difference = NormaliseToMag(pos_difference, MAX_SPEED);
+		}
+
+		correction_force = pos_difference - velocity_;
+
+		if (correction_force.squaredNorm() > MAX_FORCE*MAX_FORCE)
+		{
+			correction_force = NormaliseToMag(correction_force, MAX_FORCE);
+		}
+
+		return correction_force;
+
+	}
 
 
 }
