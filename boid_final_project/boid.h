@@ -9,6 +9,7 @@
 #include <math.h>
 
 
+
 using namespace Eigen;
 using namespace std;
 
@@ -37,10 +38,13 @@ private:
 	Vector3f acceleration_;
 
 	vector<int> grid_index_;
+
+	vector<tuple<Boid*, float>> nearby_boid_buffer_;
+	int buffer_end_index_;
 	
 
 	void UpdateEdges();
-	vector<tuple<Boid*,float>> GetNearbyBoids();
+	void GetNearbyBoids();
 	Vector3f NormaliseToMag(Vector3f &vector, float magnitude);
 
 	Vector3f Cohesion(vector<tuple<Boid*, float>> &nearby_boids);

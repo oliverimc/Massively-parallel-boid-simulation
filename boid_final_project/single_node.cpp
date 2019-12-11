@@ -16,6 +16,7 @@ vector<Vector3f> run(int rank, int size)
 	vector<int> grid_updates;
 	vector<Vector3f> paths(BOID_NUMBER*STEPS);
 
+
 	for (Boid &boid : boids)
 	{
 		boid.SetRanValues(ran_num_gen, velocity_distribution, posistion_distribution);
@@ -28,6 +29,7 @@ vector<Vector3f> run(int rank, int size)
 	for (int step = 0; step < STEPS; step++)
 	{
 		grid_updates.resize(0);
+		
 
 		#pragma omp parallel for
 		for (int boid = 0; boid < BOID_NUMBER; boid++)

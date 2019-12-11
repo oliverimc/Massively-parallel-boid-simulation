@@ -17,6 +17,8 @@ using namespace std;
 using namespace Eigen;
 
 
+//https://stackoverflow.com/questions/38061067/data-race-with-stdunordered-map-despite-locking-insertions-with-mutex
+
 void write_to_file(string name, vector<Vector3f> &paths, int steps, int boid_number, int rank)
 {
 

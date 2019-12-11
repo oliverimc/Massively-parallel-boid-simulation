@@ -10,6 +10,7 @@ Boid::Boid()
 	acceleration_ = Vector3f::Zero();
 	grid_index_.resize(3);
 	neighbouring_cells_buffer_.resize(27);
+	nearby_boid_buffer_.resize(BOID_NUMBER / 4);
 }
 
 Boid::~Boid()
@@ -18,8 +19,8 @@ Boid::~Boid()
 
 void Boid::Update()
 {
-	vector<tuple<Boid*, float>> nearby_boids = GetNearbyBoids();
-	acceleration_ = COHESION_FACTOR * Cohesion(nearby_boids) + SEPERATION_FACTOR * Seperation(nearby_boids) + ALIGNMENT_FACTOR * Alignment(nearby_boids);
+    GetNearbyBoids();
+	acceleration_ = COHESION_FACTOR * Cohesion(nearby_boid_buffer_) + SEPERATION_FACTOR * Seperation(nearby_boid_buffer_) + ALIGNMENT_FACTOR * Alignment(nearby_boid_buffer_);
 	velocity_ += acceleration_;
 	posistion_ += velocity_;
 	UpdateEdges();
@@ -101,9 +102,9 @@ void Boid::UpdateEdges()
 
 }
 
-vector<tuple<Boid*, float>> Boid::GetNearbyBoids()
+void Boid::GetNearbyBoids()
 {
-	vector<tuple<Boid*, float>> nearby_boids;
+	int i = 0;
 
 	for (auto &cell : neighbouring_cells_buffer_)
 	{
@@ -117,14 +118,17 @@ vector<tuple<Boid*, float>> Boid::GetNearbyBoids()
 			{
 				
 				//only calculates square root for boids that are nearby to reduce number of expensive calls to Sqrt()
-				nearby_boids.push_back(make_tuple((*boid), sqrt(distance_squared)));
+				get<0>(nearby_boid_buffer_[i]) = *boid;
+				get<1>(nearby_boid_buffer_[i]) = sqrt(distance_squared);
+				i++;
+					
 
 			}
 		}
 	}
 
-	return nearby_boids;
-
+	
+	buffer_end_index_ = i;
 }
 
 Vector3f Boid::NormaliseToMag(Vector3f & vector, float magnitude)
@@ -138,9 +142,9 @@ Vector3f Boid::Cohesion(vector<tuple<Boid*, float>>& nearby_boids)
 	Vector3f average_vel = Vector3f::Zero();
 	Vector3f correction_force = Vector3f::Zero();
 
-	for (auto &boid_dist_tuple : nearby_boids)
+	for (int index =0 ; index<buffer_end_index_; index++)
 	{
-		average_vel += get<0>(boid_dist_tuple)->GetVelocity();
+		average_vel += get<0>(nearby_boid_buffer_[index])->GetVelocity();
 		num_boids++;
 
 	}
@@ -163,10 +167,10 @@ Vector3f Boid::Seperation(vector<tuple<Boid*, float>>& nearby_boids)
 	Vector3f average_pos = Vector3f::Zero();
 	Vector3f correction_force = Vector3f::Zero();
 
-	for (auto &boid_dist_tuple : nearby_boids)
+	for (int index = 0; index < buffer_end_index_; index++)
 	{
-		Vector3f pos_difference = posistion_ - get<0>(boid_dist_tuple)->GetPosistion();
-		pos_difference /= get<1>(boid_dist_tuple);
+		Vector3f pos_difference = posistion_ - get<0>(nearby_boid_buffer_[index])->GetPosistion();
+		pos_difference /= get<1>(nearby_boid_buffer_[index]);
 		average_pos += pos_difference;
 		num_boids++;
 	}
@@ -199,9 +203,9 @@ Vector3f Boid::Alignment(vector<tuple<Boid*, float>>& nearby_boids)
 	Vector3f correction_force = Vector3f::Zero();
 
 
-	for (auto &boid_dist_tuple : nearby_boids)
+	for (int index = 0; index < buffer_end_index_; index++)
 	{
-		centre_mass += get<0>(boid_dist_tuple)->GetPosistion();
+		centre_mass += get<0>(nearby_boid_buffer_[index])->GetPosistion();
 		num_boids++;
 	}
 

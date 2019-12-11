@@ -46,6 +46,7 @@ vector<Vector3f> run_master(int rank, int size)
 
 		grid_updates.resize(0);
 		
+
 		#pragma omp parallel for
 		for (int boid = start_index; boid < end_index; boid++)
 		{

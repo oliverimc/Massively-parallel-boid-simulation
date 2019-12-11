@@ -15,6 +15,7 @@ vector<Vector3f> run_worker(int rank, int size)
 	int boids_per_node = floor(BOID_NUMBER / size);
 	int start_index = (rank - 1)*boids_per_node;
 	int end_index = start_index + boids_per_node;
+	
 
 	vector<Vector3f> paths(boids_per_node*STEPS);
 	vector<float> node_boid_memory(boids_per_node * 6);
@@ -30,6 +31,8 @@ vector<Vector3f> run_worker(int rank, int size)
 	for (int step = 0; step < STEPS; step++)
 	{
 		grid_updates.resize(0);
+		
+
 		#pragma omp parallel for
 		for (int boid = start_index; boid < end_index; boid++)
 		{
