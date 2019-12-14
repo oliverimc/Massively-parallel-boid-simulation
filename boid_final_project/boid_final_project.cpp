@@ -1,6 +1,9 @@
 // boid_final_project.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+
+
+
 #include "pch.h"
 #include "preprocessor.h"
 #include "single_node.h"
@@ -68,7 +71,6 @@ void write_to_file(string name, vector<Vector3f> &paths, int steps, int boid_num
 
 
 }
-
 
 
 

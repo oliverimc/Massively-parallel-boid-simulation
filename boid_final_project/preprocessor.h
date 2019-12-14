@@ -1,8 +1,8 @@
 #pragma once
 
-#define THREAD_NUM 1
+#define THREAD_NUM 4
 #define MASTER 0 
-#define SAVE false
+#define SAVE true
 
 
 #define LENGTH 1000

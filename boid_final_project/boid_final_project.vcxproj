@@ -151,6 +151,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <CudaCompile>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+    </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="boid.h" />
