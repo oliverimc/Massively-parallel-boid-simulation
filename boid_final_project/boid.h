@@ -18,7 +18,7 @@ class Boid
 public:
 	Boid();
 	~Boid();
-	void Update(Vector3f &shark);
+	void Update();
 	void SetRanValues(default_random_engine &random_engine, uniform_real_distribution<float> &vel_distr, uniform_real_distribution<float> &pos_distr);
 	
 	void Serialise(vector<float> &memory, int start_location);
@@ -50,7 +50,7 @@ private:
 	Vector3f Cohesion(vector<tuple<Boid*, float>> &nearby_boids);
 	Vector3f Seperation(vector<tuple<Boid*, float>> &nearby_boids);
 	Vector3f Alignment(vector<tuple<Boid*, float>> &nearby_boids);
-	Vector3f Shark(Vector3f &shark_pos, bool shark_enabled);
+	
 
 
 };

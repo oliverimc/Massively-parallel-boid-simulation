@@ -17,7 +17,7 @@ vector<Vector3f> run_master(int rank, int size)
 	vector<Boid> boids(BOID_NUMBER);
 	vector<float> boid_memory(BOID_NUMBER * 6);
 	vector<int> grid_updates; // updates from calculations done on boids assigned to this master node
-	Vector3f shark;
+	
 
 	int boids_per_node = floor(BOID_NUMBER / size);
 	int start_index = (size - 1)*boids_per_node;
@@ -46,19 +46,13 @@ vector<Vector3f> run_master(int rank, int size)
 
 		grid_updates.resize(0);
 		
-		if (SHARK_ENABLED) {
-			shark[0] = 500 + 350 * sin(2 * PI / STEPS * step);
-			shark[1] = 500 + 350 * cos(2 * PI / STEPS * step);
-			shark[2] = 100 + step / STEPS * 700;
-		}
 
 		#pragma omp parallel for
 		for (int boid = start_index; boid < end_index; boid++)
 		{
 
-			
 			grid.UpdateNearCells(boids[boid]);
-			boids[boid].Update(shark);			
+			boids[boid].Update();			
 			paths[MultiPathIndice(boid, step, boids_per_node, start_index)] = boids[boid].GetPosistion();
 			
 		}

@@ -17,10 +17,10 @@ Boid::~Boid()
 {
 }
 
-void Boid::Update(Vector3f &shark)
+void Boid::Update()
 {
     GetNearbyBoids();
-	acceleration_ = COHESION_FACTOR * Cohesion(nearby_boid_buffer_) + SEPERATION_FACTOR * Seperation(nearby_boid_buffer_) + ALIGNMENT_FACTOR * Alignment(nearby_boid_buffer_) + SHARK_FACTOR * Shark(shark, SHARK_ENABLED);
+	acceleration_ = COHESION_FACTOR * Cohesion(nearby_boid_buffer_) + SEPERATION_FACTOR * Seperation(nearby_boid_buffer_) + ALIGNMENT_FACTOR * Alignment(nearby_boid_buffer_);
 	velocity_ += acceleration_;
 	posistion_ += velocity_;
 	UpdateEdges();
@@ -232,40 +232,4 @@ Vector3f Boid::Alignment(vector<tuple<Boid*, float>>& nearby_boids)
 
 }
 
-Vector3f Boid::Shark(Vector3f & shark_pos, bool  shark_enabled)
-{
 
-	Vector3f correction_force = Vector3f::Zero();
-
-	if (!shark_enabled)
-	{
-		return correction_force;
-	}
-	else 
-	{
-		Vector3f pos_difference = posistion_ - shark_pos;
-		
-		float distance_squared = pos_difference.squaredNorm();
-
-
-
-		pos_difference /= sqrt(distance_squared);
-
-		if (pos_difference.squaredNorm() > 0)
-		{
-			pos_difference = NormaliseToMag(pos_difference, MAX_SPEED);
-		}
-
-		correction_force = pos_difference - velocity_;
-
-		if (correction_force.squaredNorm() > MAX_FORCE*MAX_FORCE)
-		{
-			correction_force = NormaliseToMag(correction_force, MAX_FORCE);
-		}
-
-		return correction_force;
-
-	}
-
-
-}
