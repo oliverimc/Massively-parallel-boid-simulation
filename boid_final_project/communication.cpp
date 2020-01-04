@@ -11,7 +11,7 @@ void DeSerialiseBoids(vector<Boid>& boids, vector<float>& memory)
 
 void DeSerialiseBoids(vector<Boid>& boids, vector<float>& memory, int start, int end)
 {
-	for (unsigned int boid = start; boid < end; boid++)
+	for ( int boid = start; boid < end; boid++)
 	{
 		boids[boid].DeSerialise(memory, (boid-start) * 6);
 	}
@@ -20,7 +20,7 @@ void DeSerialiseBoids(vector<Boid>& boids, vector<float>& memory, int start, int
 
 void SerialiseBoids(vector<Boid>& boids, vector<float>& memory)
 {
-	for (unsigned int boid = 0; boid < boids.size(); boid++)
+	for ( unsigned int boid = 0; boid < boids.size(); boid++)
 	{
 		boids[boid].Serialise(memory, boid * 6);
 	}
@@ -28,7 +28,7 @@ void SerialiseBoids(vector<Boid>& boids, vector<float>& memory)
 
 void SerialiseBoids(vector<Boid>& boids, vector<float>& memory, int start, int end)
 {
-	for (unsigned int boid = start; boid < end; boid++)
+	for ( int boid = start; boid < end; boid++)
 	{
 		boids[boid].Serialise(memory, (boid - start) * 6);
 	}
@@ -41,7 +41,7 @@ void BroadcastSendBoids(vector<Boid>& boids, vector<float>& memory, int rank)
 }
 
 
-void BroadcastRecieveBoids(vector<Boid>& boids, vector<float>& memory, int rank)
+void BroadcastReceiveBoids(vector<Boid>& boids, vector<float>& memory, int rank)
 {
 
 	MPI_Bcast(&memory[0], memory.size(), MPI_FLOAT, rank, MPI_COMM_WORLD);
@@ -58,7 +58,7 @@ void SendBoids(vector<Boid>& boids, vector<float>& memory, int source, int desti
 
 }
 
-void RecieveBoids(vector<Boid>& boids, vector<float>& memory, int source, int destination, int start, int stop)
+void ReceiveBoids(vector<Boid>& boids, vector<float>& memory, int source, int destination, int start, int stop)
 {
 	MPI_Status stat;
 	MPI_Recv(&memory[0], memory.size(), MPI_FLOAT, source, 5, MPI_COMM_WORLD, &stat);

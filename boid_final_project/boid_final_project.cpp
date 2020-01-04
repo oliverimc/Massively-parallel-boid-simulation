@@ -15,6 +15,8 @@
 #include <mpi.h>
 #include <iostream>
 #include <fstream>
+#include <chrono>
+#include <ctime> 
 
 using namespace std;
 using namespace Eigen;
@@ -29,14 +31,14 @@ void write_to_file(string name, vector<Vector3f> &paths, int steps, int boid_num
 {
 
 	ofstream file;
-
-
-
 	file.open(name + ".txt");
+	
+	auto now = chrono::system_clock::now();
+	auto now_time = std::chrono::system_clock::to_time_t(now);
 
-
+	
 	file << "Boid Simulation Output Results:" << endl;
-	file << "Time of Simulation: " << "None" << endl << endl;
+	file << "Time of Simulation: " << ctime(&now_time) << endl;
 	file << "Number of Boids: " << BOID_NUMBER << endl;
 	file << "Size of Simulation Area: " << LENGTH << endl;
 	file << "Number of Simulation Steps: " << STEPS << endl;
@@ -52,7 +54,7 @@ void write_to_file(string name, vector<Vector3f> &paths, int steps, int boid_num
 			for (int i = 0; i < 3; i++)
 			{
 				file << pos[i];
-				if (i == (3 - 1))
+				if (i == 2)
 				{
 					file << "$";
 				}
@@ -98,7 +100,7 @@ int main(int argc, char* argv[])
 		vector<Vector3f> paths = run(rank, num_nodes);
 		if (SAVE) 
 		{
-			write_to_file("shark", paths, STEPS, BOID_NUMBER, rank);
+			write_to_file("update-test", paths, STEPS, BOID_NUMBER, rank);
 		}
 
 		
@@ -113,7 +115,7 @@ int main(int argc, char* argv[])
 		
 		if (SAVE)
 		{
-			write_to_file("mulit-node-0", paths, STEPS, BOID_NUMBER/num_nodes+BOID_NUMBER%num_nodes, rank);
+			write_to_file("multi-node-0", paths, STEPS, BOID_NUMBER/num_nodes+BOID_NUMBER%num_nodes, rank);
 		}
 	}
 

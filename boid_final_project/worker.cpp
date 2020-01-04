@@ -19,14 +19,14 @@ vector<Vector3f> run_worker(int rank, int size)
 	vector<Vector3f> paths(boids_per_node*STEPS);
 	vector<float> node_boid_memory(boids_per_node * 6);
 
-	BroadcastRecieveBoids(boids, boid_memory, MASTER);
+	BroadcastReceiveBoids(boids, boid_memory, MASTER);
 
 	SpatialGrid grid(boids);
 
 	
 	printf("(%d) Starting worker\n", rank);
 	fflush(stdout);
-	float start_t = MPI_Wtime();
+	double start_t = MPI_Wtime();
 	for (int step = 0; step < STEPS; step++)
 	{
 		grid_updates.resize(0);
@@ -39,7 +39,7 @@ vector<Vector3f> run_worker(int rank, int size)
 
 			grid.UpdateNearCells(boids[boid]);
 			boids[boid].Update();
-			paths[MultiPathIndice(boid, step, boids_per_node, start_index)] = boids[boid].GetPosistion();
+			paths[MultiPathIndice(boid, step, boids_per_node, start_index)] = boids[boid].GetPosition();
 
 		}
 	
@@ -58,7 +58,7 @@ vector<Vector3f> run_worker(int rank, int size)
 		
 
 		BroadcastReceiveGridUpdates(grid_updates, MASTER);
-		BroadcastRecieveBoids(boids, boid_memory, MASTER);
+		BroadcastReceiveBoids(boids, boid_memory, MASTER);
 
 	
 
@@ -72,7 +72,7 @@ vector<Vector3f> run_worker(int rank, int size)
 		}
 
 	}
-	float end_t = MPI_Wtime();
+	double end_t = MPI_Wtime();
 
 	printf("(%d)Total time taken %.2f\n", rank, end_t - start_t);
 

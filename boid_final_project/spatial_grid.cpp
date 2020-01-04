@@ -15,10 +15,6 @@ SpatialGrid::SpatialGrid(vector<Boid> &boids)
 }
 
 
-SpatialGrid::~SpatialGrid()
-{
-}
-
 void SpatialGrid::UpdateNearCells(Boid & boid)
 {
 	vector<int> boid_grid_index = boid.GetGridIndex();
@@ -88,12 +84,12 @@ void SpatialGrid::UpdateGrid(Boid & boid, int old_vector_index, int new_vector_i
 	boid.SetGridIndex(grid_index_pos);
 }
 
-int SpatialGrid::GetGridVectorIndex(vector<int>& grid_index)
+int SpatialGrid::GetGridVectorIndex(vector<int>& grid_index) const
 {
 	return cell_num * cell_num*grid_index[0] + cell_num * grid_index[1] + grid_index[2];
 }
 
-int SpatialGrid::GetGridVectorIndex(int & x, int & y, int & z)
+int SpatialGrid::GetGridVectorIndex(int & x, int & y, int & z) const
 {
 	return x * cell_num*cell_num + y * cell_num + z;
 }
@@ -104,7 +100,7 @@ vector<int> SpatialGrid::GetGridIndex(Boid & boid)
 	
 	for (int i = 0; i < 3; i++)
 	{
-		grid_pos[i] = floor(boid.GetPosistion()[i] / cell_length);
+		grid_pos[i] = floor(boid.GetPosition()[i] / cell_length);
 
 		if (!(grid_pos[i] < cell_num))
 		{

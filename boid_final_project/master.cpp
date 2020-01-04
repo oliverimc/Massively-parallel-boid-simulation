@@ -53,7 +53,7 @@ vector<Vector3f> run_master(int rank, int size)
 
 			grid.UpdateNearCells(boids[boid]);
 			boids[boid].Update();			
-			paths[MultiPathIndice(boid, step, boids_per_node, start_index)] = boids[boid].GetPosistion();
+			paths[MultiPathIndice(boid, step, boids_per_node, start_index)] = boids[boid].GetPosition();
 			
 		}
 		
@@ -69,7 +69,7 @@ vector<Vector3f> run_master(int rank, int size)
 		
 		for (int node = 1; node < size; node++)
 		{
-			RecieveBoids(boids, node_boid_memory, node, MASTER, (node - 1)*boids_per_node, node*boids_per_node);
+			ReceiveBoids(boids, node_boid_memory, node, MASTER, (node - 1)*boids_per_node, node*boids_per_node);
 
 		}
 		
@@ -114,7 +114,6 @@ vector<Vector3f> run_master(int rank, int size)
 
 
 
-	//printf("%.2f , %.2f, %.2f, %.2f", t1, t2, t3, t4);
 
 
 	

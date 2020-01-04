@@ -6,7 +6,7 @@
 #include "Eigen/Dense"
 #include <vector>
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include <cstdio>
 
 vector<Vector3f> run_worker(int rank, int size);

@@ -39,10 +39,10 @@ vector<Vector3f> run(int rank, int size)
 
 			grid.UpdateNearCells(boids[boid]);
 			boids[boid].Update();
-			paths[PathIndice(boid, step, BOID_NUMBER)] = boids[boid].GetPosistion();
+			paths[PathIndice(boid, step, BOID_NUMBER)] = boids[boid].GetPosition();
 
 		}
-
+		
 		for (int boid = 0; boid < BOID_NUMBER; boid++)
 		{
 			grid.UpdateGrid(boids[boid], grid_updates);

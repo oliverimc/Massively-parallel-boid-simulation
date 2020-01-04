@@ -7,7 +7,7 @@
 #include <vector>
 #include <iostream>
 #include <random>
-#include <math.h>
+#include <cmath>
 #include <cstdio>
 #include <fstream>
 vector<Vector3f> run_master(int rank, int size);

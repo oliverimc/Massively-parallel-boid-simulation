@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "boid.h"
-#include <iostream>
+
 
 
 Boid::Boid()
 {
-	posistion_ = Vector3f::Zero();
+	position_ = Vector3f::Zero();
 	velocity_ = Vector3f::Zero();
 	acceleration_ = Vector3f::Zero();
 	grid_index_.resize(3);
@@ -13,17 +13,13 @@ Boid::Boid()
 	nearby_boid_buffer_.resize(BOID_NUMBER / 4);
 }
 
-Boid::~Boid()
-{
-	
-}
 
 void Boid::Update()
 {
     GetNearbyBoids();
-	acceleration_ = COHESION_FACTOR * Cohesion(nearby_boid_buffer_) + SEPERATION_FACTOR * Seperation(nearby_boid_buffer_) + ALIGNMENT_FACTOR * Alignment(nearby_boid_buffer_);
+	acceleration_ = COHESION_FACTOR * Cohesion(nearby_boid_buffer_) + SEPARATION_FACTOR * Separation(nearby_boid_buffer_) + ALIGNMENT_FACTOR * Alignment(nearby_boid_buffer_);
 	velocity_ += acceleration_;
-	posistion_ += velocity_;
+	position_ += velocity_;
 	UpdateEdges();
 	acceleration_ = Vector3f::Zero();
 }
@@ -33,7 +29,7 @@ void Boid::SetRanValues(default_random_engine & random_engine, uniform_real_dist
 	for (int i = 0; i < 3; i++)
 	{
 		velocity_[i] = vel_distr(random_engine);
-		posistion_[i] = pos_distr(random_engine);
+		position_[i] = pos_distr(random_engine);
 	}
 }
 
@@ -41,7 +37,7 @@ void Boid::Serialise(vector<float>& memory, int start_location)
 {
 	for (int i = 0; i < 3; i++)
 	{
-		memory[start_location + i] = posistion_[i];
+		memory[start_location + i] = position_[i];
 		memory[start_location + 3 + i] = velocity_[i];
 
 	}
@@ -53,29 +49,29 @@ void Boid::DeSerialise(vector<float>& memory, int start_location)
 {
 	for (int i = 0; i < 3; i++)
 	{
-		posistion_[i] = memory[start_location + i];
+		position_[i] = memory[start_location + i];
 		velocity_[i] = memory[start_location + 3 + i];
 
 	}
 
 }
 
-const Vector3f Boid::GetPosistion()
-{
-	return posistion_;
+ Vector3f Boid::GetPosition() const
+ {
+	return position_;
 }
 
-const Vector3f Boid::GetVelocity()
-{
+ Vector3f Boid::GetVelocity() const
+ {
 	return velocity_;
 }
 
-vector<list<Boid*>*> Boid::GetNeighbourBuffer()
+vector<list<Boid*>*> Boid::GetNeighbourBuffer() const
 {
 	return neighbouring_cells_buffer_;
 }
 
-const vector<int> Boid::GetGridIndex()
+vector<int> Boid::GetGridIndex() const
 {
 	return grid_index_;
 		
@@ -90,13 +86,13 @@ void Boid::UpdateEdges()
 {
 	for (int i = 0; i < 3; i++)
 	{
-		if (posistion_[i] > LENGTH)
+		if (position_[i] > LENGTH)
 		{
-			posistion_[i] = 0;
+			position_[i] = 0;
 		}
-		else if (posistion_[i] < 0)
+		else if (position_[i] < 0)
 		{
-			posistion_[i] = LENGTH;
+			position_[i] = LENGTH;
 		}
 			   
 	}
@@ -109,16 +105,14 @@ void Boid::GetNearbyBoids()
 
 	for (auto &cell : neighbouring_cells_buffer_)
 	{
-		
-		
-		for (auto boid = cell->begin(); boid != cell->end(); ++boid)
+		for (auto& boid : *cell)
 		{
-			float distance_squared = ((*boid)->GetPosistion() -posistion_).squaredNorm();
+		    float distance_squared = (boid->GetPosition() -position_).squaredNorm();
 			
 			if (distance_squared != 0 && distance_squared < SEEING_DISTANCE_SQ)
 			{
 				//only calculates square root for boids that are nearby to reduce number of expensive calls to Sqrt()
-				get<0>(nearby_boid_buffer_[i]) = *boid;
+				get<0>(nearby_boid_buffer_[i]) = boid;
 				get<1>(nearby_boid_buffer_[i]) = sqrt(distance_squared);
 				i++;
 					
@@ -160,7 +154,7 @@ Vector3f Boid::Cohesion(vector<tuple<Boid*, float>>& nearby_boids)
 	return correction_force;
 }
 
-Vector3f Boid::Seperation(vector<tuple<Boid*, float>>& nearby_boids)
+Vector3f Boid::Separation(vector<tuple<Boid*, float>>& nearby_boids)
 {
 	int num_boids = 0;
 	Vector3f average_pos = Vector3f::Zero();
@@ -168,7 +162,7 @@ Vector3f Boid::Seperation(vector<tuple<Boid*, float>>& nearby_boids)
 
 	for (int index = 0; index < buffer_end_index_; index++)
 	{
-		Vector3f pos_difference = posistion_ - get<0>(nearby_boid_buffer_[index])->GetPosistion();
+		Vector3f pos_difference = position_ - get<0>(nearby_boid_buffer_[index])->GetPosition();
 		pos_difference /= get<1>(nearby_boid_buffer_[index]);
 		average_pos += pos_difference;
 		num_boids++;
@@ -204,14 +198,14 @@ Vector3f Boid::Alignment(vector<tuple<Boid*, float>>& nearby_boids)
 
 	for (int index = 0; index < buffer_end_index_; index++)
 	{
-		centre_mass += get<0>(nearby_boid_buffer_[index])->GetPosistion();
+		centre_mass += get<0>(nearby_boid_buffer_[index])->GetPosition();
 		num_boids++;
 	}
 
 	if (num_boids > 0)
 	{
 		centre_mass /= num_boids;
-		Vector3f vector_to_com = centre_mass - posistion_;
+		Vector3f vector_to_com = centre_mass - position_;
 		if (vector_to_com.squaredNorm() > 0)
 		{
 			vector_to_com = NormaliseToMag(vector_to_com, MAX_SPEED);
