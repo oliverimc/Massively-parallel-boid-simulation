@@ -25,14 +25,14 @@ vector<Vector3f> run(int rank, int size)
 
 	SpatialGrid grid(boids);
 
-	float start_t = MPI_Wtime();
+	double start_t = MPI_Wtime();
 	for (int step = 0; step < STEPS; step++)
 	{
 		grid_updates.resize(0);
 		
 		
 
-		#pragma omp parallel for
+		#pragma omp parallel for schedule(guided)
 		for (int boid = 0; boid < BOID_NUMBER; boid++)
 		{
 
@@ -50,9 +50,17 @@ vector<Vector3f> run(int rank, int size)
 		
 
 	}
-	float end_t = MPI_Wtime();
+	double end_t = MPI_Wtime();
 
-	printf("(%d)Time taken %.2f\n",rank, end_t - start_t);
+
+	printf("(%d)Time taken %.5f\n",rank, end_t - start_t);
+	
+	std::ofstream file;
+
+	file.open("timing.txt", std::ofstream::app);
+	file << THREAD_NUM * size << "," << end_t - start_t << std::endl;
+	file.close();
+	
 	return paths;
 
 

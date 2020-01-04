@@ -24,6 +24,7 @@ using namespace Eigen;
 //https://github.com/AmanSachan1/CUDA-Boid-Flocking/blob/master/src/kernel.cu
 //https://github.com/chernandez7/cuda-boids/blob/master/kernel.cu
 
+
 void write_to_file(string name, vector<Vector3f> &paths, int steps, int boid_number, int rank)
 {
 
@@ -77,6 +78,8 @@ void write_to_file(string name, vector<Vector3f> &paths, int steps, int boid_num
 int main(int argc, char* argv[])
 {
 
+
+
 	int num_nodes, rank, namelen;
 	char processor_name[MPI_MAX_PROCESSOR_NAME];
 	
@@ -97,6 +100,8 @@ int main(int argc, char* argv[])
 		{
 			write_to_file("shark", paths, STEPS, BOID_NUMBER, rank);
 		}
+
+		
 		
 
 	}

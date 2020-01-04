@@ -3,7 +3,7 @@
 
 void DeSerialiseBoids(vector<Boid>& boids, vector<float>& memory)
 {
-	for (int boid = 0; boid < boids.size(); boid++)
+	for (unsigned int boid = 0; boid < boids.size(); boid++)
 	{
 		boids[boid].DeSerialise(memory, boid*6);
 	}
@@ -11,7 +11,7 @@ void DeSerialiseBoids(vector<Boid>& boids, vector<float>& memory)
 
 void DeSerialiseBoids(vector<Boid>& boids, vector<float>& memory, int start, int end)
 {
-	for (int boid = start; boid < end; boid++)
+	for (unsigned int boid = start; boid < end; boid++)
 	{
 		boids[boid].DeSerialise(memory, (boid-start) * 6);
 	}
@@ -20,7 +20,7 @@ void DeSerialiseBoids(vector<Boid>& boids, vector<float>& memory, int start, int
 
 void SerialiseBoids(vector<Boid>& boids, vector<float>& memory)
 {
-	for (int boid = 0; boid < boids.size(); boid++)
+	for (unsigned int boid = 0; boid < boids.size(); boid++)
 	{
 		boids[boid].Serialise(memory, boid * 6);
 	}
@@ -28,7 +28,7 @@ void SerialiseBoids(vector<Boid>& boids, vector<float>& memory)
 
 void SerialiseBoids(vector<Boid>& boids, vector<float>& memory, int start, int end)
 {
-	for (int boid = start; boid < end; boid++)
+	for (unsigned int boid = start; boid < end; boid++)
 	{
 		boids[boid].Serialise(memory, (boid - start) * 6);
 	}

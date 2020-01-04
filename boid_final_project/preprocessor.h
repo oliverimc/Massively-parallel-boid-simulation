@@ -2,13 +2,13 @@
 
 #define THREAD_NUM 4
 #define MASTER 0 
-#define SAVE true
+#define SAVE false
 
 
 #define LENGTH 1000
 #define SEEING_DISTANCE 100
 #define SEEING_DISTANCE_SQ SEEING_DISTANCE*SEEING_DISTANCE
-#define BOID_NUMBER 1000
+#define BOID_NUMBER 5000
 #define STEPS 1000
 
 #define MAX_SPEED 3

@@ -3,6 +3,7 @@
 #include "single_node.h"
 #include "boid.h"
 #include "spatial_grid.h"
+#include <fstream>
 #include "Eigen/Dense"
 #include <mpi.h>
 #include <random>

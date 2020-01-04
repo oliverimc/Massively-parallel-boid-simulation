@@ -40,7 +40,7 @@ vector<Vector3f> run_master(int rank, int size)
 
 	printf("(%d) Starting master\n", rank);
 	fflush(stdout);
-	float start_t = MPI_Wtime();
+	double start_t = MPI_Wtime();
 	for (int step = 0; step < STEPS; step++)
 	{
 
@@ -81,7 +81,7 @@ vector<Vector3f> run_master(int rank, int size)
 
 		}
 	
-		for (int i = 0; i < grid_updates.size(); i += 3)
+		for (unsigned int i = 0; i < grid_updates.size(); i += 3)
 		{
 			grid.UpdateGrid(boids[grid_updates[i + 2]], grid_updates[i], grid_updates[i + 1]);
 			
@@ -100,9 +100,19 @@ vector<Vector3f> run_master(int rank, int size)
 
 
 	}
-	float end_t = MPI_Wtime();
+	double end_t = MPI_Wtime();
 
 	printf("(%d)Total time taken %.2f\n", rank, end_t - start_t);
+
+	std::ofstream file;
+
+	file.open("timing.txt", std::ofstream::app);
+	file  << THREAD_NUM * size << "," << end_t - start_t << std::endl;
+	file.close();
+
+
+
+
 
 	//printf("%.2f , %.2f, %.2f, %.2f", t1, t2, t3, t4);
 

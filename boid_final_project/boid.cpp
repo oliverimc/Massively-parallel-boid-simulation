@@ -15,6 +15,7 @@ Boid::Boid()
 
 Boid::~Boid()
 {
+	
 }
 
 void Boid::Update()
