@@ -4,12 +4,12 @@
 using namespace std;
 using namespace Eigen;
 
-vector<Vector3f> run(int rank, int size)
+vector<Vector3f> run_single()
 {
 
 	random_device rand_dev;
 	default_random_engine ran_num_gen(rand_dev());
-	uniform_real_distribution<float> posistion_distribution(LENGTH / 4, 3 * LENGTH / 4);
+	uniform_real_distribution<float> position_distribution(LENGTH / 4, 3 * LENGTH / 4);
 	uniform_real_distribution<float> velocity_distribution(-MAX_SPEED, MAX_SPEED);
 
 	vector<Boid> boids(BOID_NUMBER);
@@ -19,7 +19,7 @@ vector<Vector3f> run(int rank, int size)
 
 	for (Boid &boid : boids)
 	{
-		boid.SetRanValues(ran_num_gen, velocity_distribution, posistion_distribution);
+		boid.SetRanValues(ran_num_gen, velocity_distribution, position_distribution);
 	}
 
 
@@ -53,12 +53,12 @@ vector<Vector3f> run(int rank, int size)
 	double end_t = MPI_Wtime();
 
 
-	printf("(%d)Time taken %.5f\n",rank, end_t - start_t);
+	printf("Time taken %.5f\n", end_t - start_t);
 	
 	std::ofstream file;
 
 	file.open("timing.txt", std::ofstream::app);
-	file << THREAD_NUM * size << "," << end_t - start_t << std::endl;
+	file << THREAD_NUM << "," << end_t - start_t << std::endl;
 	file.close();
 	
 	return paths;

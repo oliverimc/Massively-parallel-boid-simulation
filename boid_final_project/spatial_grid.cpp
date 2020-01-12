@@ -4,7 +4,7 @@
 
 SpatialGrid::SpatialGrid(vector<Boid> &boids)
 {
-	cell_num = floor(LENGTH / SEEING_DISTANCE);
+	cell_num = floor(LENGTH / SEEING_DISTANCE); // number/size of cells calculated off seeing distance so 27 adjacent will always contain all boids within range
 	cell_length = float(LENGTH) / float(cell_num);
 	grid.resize(cell_num*cell_num*cell_num);
 
@@ -15,6 +15,10 @@ SpatialGrid::SpatialGrid(vector<Boid> &boids)
 }
 
 
+/**
+ * \brief  Updates the 27 cells around the boid so it can query them for nearby boids
+ * \param  boid | The boid to update
+ */
 void SpatialGrid::UpdateNearCells(Boid & boid)
 {
 	vector<int> boid_grid_index = boid.GetGridIndex();
@@ -50,6 +54,12 @@ void SpatialGrid::UpdateNearCells(Boid & boid)
 
 }
 
+/**
+ * \brief   Checks if boid has moved grid cells and if so moves its pointer and stores track of changes
+ * \param  boid | Boid to update in grid
+ * \param  update_tracker | Vector that stores update information for syncing across nodes
+ * \return  | Boolean indicating if the boid has moved grid cells
+ */
 bool SpatialGrid::UpdateGrid(Boid & boid, vector<int>& update_tracker)
 {
 	vector<int> old_grid_index = boid.GetGridIndex();
@@ -104,7 +114,7 @@ vector<int> SpatialGrid::GetGridIndex(Boid & boid)
 
 		if (!(grid_pos[i] < cell_num))
 		{
-			grid_pos[i] = cell_num - 1;
+			grid_pos[i] = cell_num - 1; // fixes issue where if boid position is exactly length floor(pos/length) out of bounds of allowed grid indexes
 		}
 
 	}
@@ -124,8 +134,8 @@ vector<int> SpatialGrid::GetGridIndex(int & vector_index)
 
 void SpatialGrid::AddBoid(Boid & boid)
 {
-vector<int> grid_index = GetGridIndex(boid);
-int grid_vector_index = GetGridVectorIndex(grid_index);
-grid[grid_vector_index].push_back(&boid);
-boid.SetGridIndex(grid_index);
+	vector<int> grid_index = GetGridIndex(boid);
+	int grid_vector_index = GetGridVectorIndex(grid_index);
+	grid[grid_vector_index].push_back(&boid);
+	boid.SetGridIndex(grid_index);
 }

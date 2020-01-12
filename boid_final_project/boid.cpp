@@ -10,7 +10,7 @@ Boid::Boid()
 	acceleration_ = Vector3f::Zero();
 	grid_index_.resize(3);
 	neighbouring_cells_buffer_.resize(27);
-	nearby_boid_buffer_.resize(BOID_NUMBER / 4);
+	nearby_boid_buffer_.resize(BOID_NUMBER / 4); // Over allocates to save time associated with dynamic allocation. Should never be more than BOID_NUMBER/4 boids within range due to density.
 }
 
 
@@ -41,7 +41,6 @@ void Boid::Serialise(vector<float>& memory, int start_location)
 		memory[start_location + 3 + i] = velocity_[i];
 
 	}
-
 
 }
 
@@ -111,7 +110,7 @@ void Boid::GetNearbyBoids()
 			
 			if (distance_squared != 0 && distance_squared < SEEING_DISTANCE_SQ)
 			{
-				//only calculates square root for boids that are nearby to reduce number of expensive calls to Sqrt()
+				//only calculates square root for boids that are nearby to reduce number of expensive calls to sqrt()
 				get<0>(nearby_boid_buffer_[i]) = boid;
 				get<1>(nearby_boid_buffer_[i]) = sqrt(distance_squared);
 				i++;
@@ -124,7 +123,7 @@ void Boid::GetNearbyBoids()
 	buffer_end_index_ = i;
 }
 
-Vector3f Boid::NormaliseToMag(Vector3f & vector, float magnitude)
+inline Vector3f Boid::NormaliseToMag(Vector3f & vector, float magnitude)
 {
 	return  vector.normalized()*magnitude;
 }
@@ -135,7 +134,7 @@ Vector3f Boid::Cohesion(vector<tuple<Boid*, float>>& nearby_boids)
 	Vector3f average_vel = Vector3f::Zero();
 	Vector3f correction_force = Vector3f::Zero();
 
-	for (int index =0 ; index<buffer_end_index_; index++)
+	for (int index = 0 ; index < buffer_end_index_; index++)
 	{
 		average_vel += get<0>(nearby_boid_buffer_[index])->GetVelocity();
 		num_boids++;

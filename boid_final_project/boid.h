@@ -18,6 +18,7 @@ class Boid
 public:
 	Boid();
 	~Boid() = default;
+
 	void Update();
 	void SetRanValues(default_random_engine &random_engine, uniform_real_distribution<float> &vel_distr, uniform_real_distribution<float> &pos_distr);
 	
@@ -30,7 +31,7 @@ public:
 	vector<list<Boid*>*> GetNeighbourBuffer() const;
 	vector<int> GetGridIndex() const;
 	void SetGridIndex(vector<int> &grid_index);
-	vector<list<Boid*>*> neighbouring_cells_buffer_;
+	vector<list<Boid*>*> neighbouring_cells_buffer_; //pre-allocated memory to store pointers to the 27 relevant cells containing boid pointers that are surrounding the boid in the spatial grid
 
 private:
 	Vector3f position_;
@@ -39,14 +40,14 @@ private:
 
 	vector<int> grid_index_;
 
-	vector<tuple<Boid*, float>> nearby_boid_buffer_;
-	int buffer_end_index_;
+	vector<tuple<Boid*, float>> nearby_boid_buffer_; //pre-allocated memory for storing pointers to nearby boids and their distances which is then iterated through in Cohesion... etc
+	int buffer_end_index_; // on each update stores how many boids were nearby and where to iterate to
 	
 
 	void UpdateEdges();
 	void GetNearbyBoids();
 
-	Vector3f NormaliseToMag(Vector3f &vector, float magnitude);
+	inline Vector3f NormaliseToMag(Vector3f &vector, float magnitude);
 
 	Vector3f Cohesion(vector<tuple<Boid*, float>> &nearby_boids);
 	Vector3f Separation(vector<tuple<Boid*, float>> &nearby_boids);

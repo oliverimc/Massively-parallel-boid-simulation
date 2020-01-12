@@ -11,12 +11,12 @@ vector<Vector3f> run_master(int rank, int size)
 	print("MASTER");
 	random_device rand_dev;
 	default_random_engine ran_num_gen(rand_dev());
-	uniform_real_distribution<float> posistion_distribution(LENGTH / 4, 3 * LENGTH / 4);
+	uniform_real_distribution<float> position_distribution(LENGTH / 4, 3 * LENGTH / 4);
 	uniform_real_distribution<float> velocity_distribution(-MAX_SPEED, MAX_SPEED);
 
 	vector<Boid> boids(BOID_NUMBER);
-	vector<float> boid_memory(BOID_NUMBER * 6);
-	vector<int> grid_updates; // updates from calculations done on boids assigned to this master node
+	vector<float> boid_memory(BOID_NUMBER * 6); // pre-allocated contigous memory to de/serialise the boid data to for sending with MPI
+	vector<int> grid_updates; //vector representing updates to the grid. Each update adds three integers: old spatial grid vector index, new grid vector index, boids vector index
 	
 
 	int boids_per_node = floor(BOID_NUMBER / size);
@@ -24,11 +24,11 @@ vector<Vector3f> run_master(int rank, int size)
 	int end_index = boids.size();
 
 	vector<Vector3f> paths(boids_per_node*STEPS);
-	vector<float> node_boid_memory(boids_per_node * 6);
+	vector<float> node_boid_memory(boids_per_node * 6); // pre-allocated memory to de/sereialise boid data when sending to a from nodes.
 
 	for (Boid &boid : boids)
 	{
-		boid.SetRanValues(ran_num_gen, velocity_distribution, posistion_distribution);
+		boid.SetRanValues(ran_num_gen, velocity_distribution, position_distribution);
 	}
 
 	
@@ -40,6 +40,7 @@ vector<Vector3f> run_master(int rank, int size)
 
 	printf("(%d) Starting master\n", rank);
 	fflush(stdout);
+
 	double start_t = MPI_Wtime();
 	for (int step = 0; step < STEPS; step++)
 	{
