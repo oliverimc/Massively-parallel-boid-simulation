@@ -53,7 +53,7 @@ vector<Vector3f> run_single()
 	double end_t = MPI_Wtime();
 
 
-	printf("%d:%d:%d:%d:%f\n", BOID_NUMBER, size, THREAD_NUM, size*THREAD_NUM, end_t - start_t);
+	printf("%d:%d:%d:%d:%f\n", BOID_NUMBER, 1, THREAD_NUM, THREAD_NUM, end_t - start_t);
 
 	
 	return paths;
