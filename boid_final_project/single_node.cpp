@@ -53,13 +53,8 @@ vector<Vector3f> run_single()
 	double end_t = MPI_Wtime();
 
 
-	printf("Time taken %.5f\n", end_t - start_t);
-	
-	std::ofstream file;
+	printf("%d:%d:%d:%d:%f\n", BOID_NUMBER, size, THREAD_NUM, size*THREAD_NUM, end_t - start_t);
 
-	file.open("timing.txt", std::ofstream::app);
-	file << THREAD_NUM << "," << end_t - start_t << std::endl;
-	file.close();
 	
 	return paths;
 

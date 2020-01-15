@@ -103,14 +103,9 @@ vector<Vector3f> run_master(int rank, int size)
 	}
 	double end_t = MPI_Wtime();
 
-	printf("(%d)Total time taken %.2f\n", rank, end_t - start_t);
+	printf("%d:%d:%d:%d:%f\n", BOID_NUMBER, size, THREAD_NUM, size*THREAD_NUM, end_t - start_t);
 
-	std::ofstream file;
-
-	file.open("timing.txt", std::ofstream::app);
-	file  << THREAD_NUM * size << "," << end_t - start_t << std::endl;
-	file.close();
-
+	
 
 
 

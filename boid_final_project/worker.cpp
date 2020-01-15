@@ -74,8 +74,6 @@ vector<Vector3f> run_worker(int rank, int size)
 	}
 	double end_t = MPI_Wtime();
 
-	printf("(%d)Total time taken %.2f\n", rank, end_t - start_t);
-
 
 
 
