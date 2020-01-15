@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Get_processor_name(processor_name, &namelen);
 
-	print("Initialisation Done");
+	//print("Initialisation Done");
 
 	omp_set_num_threads(THREAD_NUM);	
 	

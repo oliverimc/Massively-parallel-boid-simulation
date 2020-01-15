@@ -8,7 +8,7 @@ using namespace Eigen;
 vector<Vector3f> run_master(int rank, int size)
 {
 	
-	print("MASTER");
+	//print("MASTER");
 	random_device rand_dev;
 	default_random_engine ran_num_gen(rand_dev());
 	uniform_real_distribution<float> position_distribution(LENGTH / 4, 3 * LENGTH / 4);
@@ -38,8 +38,8 @@ vector<Vector3f> run_master(int rank, int size)
 
 
 
-	printf("(%d) Starting master\n", rank);
-	fflush(stdout);
+	//printf("(%d) Starting master\n", rank);
+	//fflush(stdout);
 
 	double start_t = MPI_Wtime();
 	for (int step = 0; step < STEPS; step++)

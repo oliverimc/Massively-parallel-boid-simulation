@@ -24,8 +24,8 @@ vector<Vector3f> run_worker(int rank, int size)
 	SpatialGrid grid(boids);
 
 	
-	printf("(%d) Starting worker\n", rank);
-	fflush(stdout);
+	//printf("(%d) Starting worker\n", rank);
+	//fflush(stdout);
 	double start_t = MPI_Wtime();
 	for (int step = 0; step < STEPS; step++)
 	{
