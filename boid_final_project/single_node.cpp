@@ -32,7 +32,7 @@ vector<Vector3f> run_single()
 		
 		
 
-		#pragma omp parallel for schedule(guided)
+		#pragma omp parallel for schedule(SCHEDULE)
 		for (int boid = 0; boid < BOID_NUMBER; boid++)
 		{
 

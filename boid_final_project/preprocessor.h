@@ -3,7 +3,7 @@
 #define THREAD_NUM 4
 #define MASTER 0 
 #define SAVE false
-
+#define SCHEDULE guided
 
 #define LENGTH 1000
 #define SEEING_DISTANCE 100

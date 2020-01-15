@@ -33,7 +33,7 @@ vector<Vector3f> run_worker(int rank, int size)
 		
 		
 
-		#pragma omp parallel for
+		#pragma omp parallel for schedule(SCHEDULE)
 		for (int boid = start_index; boid < end_index; boid++)
 		{
 
