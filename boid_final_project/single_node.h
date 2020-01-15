@@ -9,14 +9,7 @@
 #include <random>
 #include <vector>
 #include "omp.h"
-#include <Eigen/src/Core/util/ForwardDeclarations.h>
-#include <vector>
-#include <Eigen/src/Core/util/ForwardDeclarations.h>
-#include <vector>
-#include <Eigen/src/Core/util/ForwardDeclarations.h>
-#include <vector>
-#include <Eigen/src/Core/util/ForwardDeclarations.h>
-#include <vector>
+
 
 
 vector<Vector3f> run_single();
