@@ -22,10 +22,6 @@ using namespace std;
 using namespace Eigen;
 
 
-//https://stackoverflow.com/questions/38061067/data-race-with-stdunordered-map-despite-locking-insertions-with-mutex
-//https://github.com/AmanSachan1/CUDA-Boid-Flocking/blob/master/src/kernel.cu
-//https://github.com/chernandez7/cuda-boids/blob/master/kernel.cu
-
 
 /**
  * \brief Saves the boid simulation data (positions for each step) to a file
@@ -99,7 +95,7 @@ int main(int argc, char* argv[])
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Get_processor_name(processor_name, &namelen);
 
-	//print("Initialisation Done");
+
 
 	omp_set_num_threads(THREAD_NUM);	
 	
@@ -109,7 +105,7 @@ int main(int argc, char* argv[])
 		vector<Vector3f> paths = run_single();
 		if (SAVE) 
 		{
-			write_to_file("update-test", paths, STEPS, BOID_NUMBER);
+			write_to_file("50-run", paths, STEPS, BOID_NUMBER);
 		}
 
 		
