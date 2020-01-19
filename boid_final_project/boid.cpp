@@ -111,10 +111,7 @@ void Boid::GetNearbyBoids()
 			if (distance_squared != 0 && distance_squared < SEEING_DISTANCE_SQ)
 			{
 				//only calculates square root for boids that are nearby to reduce number of expensive calls to sqrt()
-				if(!i<nearby_boid_buffer_.size())
-				{
-					//print("Error | Nearby boid buffer not large enough for use");
-				}
+				
 				get<0>(nearby_boid_buffer_[i]) = boid;
 				get<1>(nearby_boid_buffer_[i]) = sqrt(distance_squared);
 				i++;
