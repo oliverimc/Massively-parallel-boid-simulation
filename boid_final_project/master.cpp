@@ -5,10 +5,17 @@
 using namespace std;
 using namespace Eigen;
 
+
+/**
+ * \brief   Main function for executing simulation on a master node
+ * \param  rank | MPI node rank
+ * \param  size | Number of MPI nodes
+ * \return  | Boid positions at each step for the masters portion of the simulation
+ */
 vector<Vector3f> run_master(int rank, int size)
 {
 	
-	//print("MASTER");
+	
 	random_device rand_dev;
 	default_random_engine ran_num_gen(rand_dev());
 	uniform_real_distribution<float> position_distribution(LENGTH / 4, 3 * LENGTH / 4);
@@ -37,9 +44,6 @@ vector<Vector3f> run_master(int rank, int size)
 	BroadcastSendBoids(boids, boid_memory, MASTER);
 
 
-
-	//printf("(%d) Starting master\n", rank);
-	//fflush(stdout);
 
 	double start_t = MPI_Wtime();
 	for (int step = 0; step < STEPS; step++)

@@ -4,6 +4,10 @@
 using namespace std;
 using namespace Eigen;
 
+/**
+ * \brief   Main function for executing simulation on a single node
+ * \return  | Boid positions for each step of the simulation
+ */
 vector<Vector3f> run_single()
 {
 

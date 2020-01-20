@@ -2,9 +2,14 @@
 #include "spatial_grid.h"
 #include <iostream>
 
+
+/**
+ * \brief   Creates a grid for given simulation details and adds all boids to appropriate cells
+ * \param  boids | Boids to add to grid 
+ */
 SpatialGrid::SpatialGrid(vector<Boid> &boids)
 {
-	cell_num = floor(LENGTH / SEEING_DISTANCE); // number/size of cells calculated off seeing distance so 27 adjacent will always contain all boids within range
+	cell_num = floor(LENGTH / SEEING_DISTANCE); // number & size of cells calculated off seeing distance so 27 adjacent will always contain all boids within range
 	cell_length = float(LENGTH) / float(cell_num);
 	grid.resize(cell_num*cell_num*cell_num);
 
@@ -21,7 +26,7 @@ SpatialGrid::SpatialGrid(vector<Boid> &boids)
  */
 void SpatialGrid::UpdateNearCells(Boid & boid)
 {
-	vector<int> boid_grid_index = boid.GetGridIndex();
+	vector<int> boid_grid_coord = boid.GetGridCoord();
 	int i = 0; 
 
 
@@ -31,9 +36,9 @@ void SpatialGrid::UpdateNearCells(Boid & boid)
 		{
 			for (int z = -1; z < 2; z++)
 			{
-				int row_x = boid_grid_index[0] + x;
-				int row_y = boid_grid_index[1] + y;
-				int row_z = boid_grid_index[2] + z;
+				int row_x = boid_grid_coord[0] + x;
+				int row_y = boid_grid_coord[1] + y;
+				int row_z = boid_grid_coord[2] + z;
 
 				row_x = row_x < cell_num ? row_x : 0;
 				row_y = row_y < cell_num ? row_y : 0;
@@ -62,18 +67,18 @@ void SpatialGrid::UpdateNearCells(Boid & boid)
  */
 bool SpatialGrid::UpdateGrid(Boid & boid, vector<int>& update_tracker)
 {
-	vector<int> old_grid_index = boid.GetGridIndex();
-	vector<int> new_grid_index = GetGridIndex(boid);
+	vector<int> old_grid_coord = boid.GetGridCoord();
+	vector<int> new_grid_coord = GetGridCoord(boid);
 
-	if (old_grid_index != new_grid_index)
+	if (old_grid_coord != new_grid_coord)
 	{
-		int old_vector_index = GetGridVectorIndex(old_grid_index);
-		int new_vector_index = GetGridVectorIndex(new_grid_index);
+		int old_vector_index = GetGridVectorIndex(old_grid_coord);
+		int new_vector_index = GetGridVectorIndex(new_grid_coord);
 
 		grid[old_vector_index].remove(&boid);
 		grid[new_vector_index].push_back(&boid);
 		
-		boid.SetGridIndex(new_grid_index);
+		boid.SetGridCoord(new_grid_coord);
 		update_tracker.push_back(old_vector_index);
 		update_tracker.push_back(new_vector_index);
 		
@@ -86,25 +91,50 @@ bool SpatialGrid::UpdateGrid(Boid & boid, vector<int>& update_tracker)
 	}
 }
 
+/**
+ * \brief  Explicitly updates grid to reflect changes from other nodes 
+ * \param  boid | Boid to update.
+ * \param  old_vector_index | Vector index of the boids old cell. 
+ * \param  new_vector_index | Vector index of the boids new cell
+ */
 void SpatialGrid::UpdateGrid(Boid & boid, int old_vector_index, int new_vector_index)
 {
 	grid[old_vector_index].remove(&boid);
 	grid[new_vector_index].push_back(&boid);
-	vector<int> grid_index_pos = GetGridIndex(new_vector_index);
-	boid.SetGridIndex(grid_index_pos);
+	vector<int> boid_grid_coord = GetGridCoord(new_vector_index);
+	boid.SetGridCoord(boid_grid_coord);
 }
 
+/**
+ * \brief   Turns 3D cell co-ordinates into a 1D index so the grid can be represented
+ *			by a 1D vector to guarantee contiguous memory and hence enable fast access.
+ * \param  grid_index | (x,y,z) vector that gives cells 3D grid co-ordinates 
+ * \return  | 1D grid vector index of the cell
+ */
 int SpatialGrid::GetGridVectorIndex(vector<int>& grid_index) const
 {
 	return cell_num * cell_num*grid_index[0] + cell_num * grid_index[1] + grid_index[2];
 }
 
+/**
+ * \brief   Turns 3D cell co-ordinates into a 1D index so the grid can be represented
+ *			by a 1D vector to guarantee contiguous memory and hence enable fast access.
+ * \param  x | Cell x co-ordinate
+ * \param  y | Cell y co-ordinate 
+ * \param  z | Cell z co-ordinate 
+ * \return  | 1D grid vector index of the cell
+ */
 int SpatialGrid::GetGridVectorIndex(int & x, int & y, int & z) const
 {
 	return x * cell_num*cell_num + y * cell_num + z;
 }
 
-vector<int> SpatialGrid::GetGridIndex(Boid & boid)
+/**
+ * \brief   Uses a boids posistion to work out which grid cell it currently is in.
+ * \param  boid | Boid to work out co-ordinates
+ * \return  | Grid co-ordinates of boid
+ */
+vector<int> SpatialGrid::GetGridCoord(Boid & boid)
 {
 	vector<int> grid_pos(3);
 	
@@ -123,7 +153,12 @@ vector<int> SpatialGrid::GetGridIndex(Boid & boid)
 
 }
 
-vector<int> SpatialGrid::GetGridIndex(int & vector_index)
+/**
+ * \brief   Converts 1D grid vector index into corresponding 3D grid cell co-ordinates
+ * \param  vector_index | 1D Grid vector index to convert
+ * \return  | Grid cell co-ordinates
+ */
+vector<int> SpatialGrid::GetGridCoord(int & vector_index)
 {
 	vector<int> return_value(3);
 	return_value[0] = vector_index / (cell_num*cell_num);
@@ -132,10 +167,14 @@ vector<int> SpatialGrid::GetGridIndex(int & vector_index)
 	return return_value;
 }
 
+/**
+ * \brief   Finds appropriate grid cell location of a boid and adds it to the grid.
+ * \param  boid | Boid to add to the grid
+ */
 void SpatialGrid::AddBoid(Boid & boid)
 {
-	vector<int> grid_index = GetGridIndex(boid);
+	vector<int> grid_index = GetGridCoord(boid);
 	int grid_vector_index = GetGridVectorIndex(grid_index);
 	grid[grid_vector_index].push_back(&boid);
-	boid.SetGridIndex(grid_index);
+	boid.SetGridCoord(grid_index);
 }

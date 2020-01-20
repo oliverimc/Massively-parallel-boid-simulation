@@ -5,6 +5,13 @@
 using namespace std;
 using namespace Eigen;
 
+
+/**
+ * \brief   Main function for executing simulation on a worker node 
+ * \param  rank | MPI node rank
+ * \param  size | Number of MPI ranks
+ * \return  | Position data for each step of the simulations for the workers portion of the boids.
+ */
 vector<Vector3f> run_worker(int rank, int size)
 {
 
@@ -24,8 +31,7 @@ vector<Vector3f> run_worker(int rank, int size)
 	SpatialGrid grid(boids);
 
 	
-	//printf("(%d) Starting worker\n", rank);
-	//fflush(stdout);
+	
 	double start_t = MPI_Wtime();
 	for (int step = 0; step < STEPS; step++)
 	{

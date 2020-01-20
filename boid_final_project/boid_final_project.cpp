@@ -10,10 +10,11 @@
 #include "master.h"
 #include "worker.h"
 
-#include<vector>
+
 #include "Eigen/Dense"
 #include <mpi.h>
 #include <iostream>
+#include<vector>
 #include <fstream>
 #include <chrono>
 #include <ctime> 
@@ -53,11 +54,11 @@ void write_to_file(string name, vector<Vector3f> &paths, int steps, int boid_num
 	{
 		for (int boid = 0; boid < boid_number; boid++)
 		{
-			Vector3f pos = paths[PathIndice(boid,step,boid_number)];
+			Vector3f position = paths[PathIndice(boid,step,boid_number)];
 
 			for (int i = 0; i < 3; i++)
 			{
-				file << pos[i];
+				file << position[i];
 				if (i == 2)
 				{
 					file << "$";
@@ -66,7 +67,6 @@ void write_to_file(string name, vector<Vector3f> &paths, int steps, int boid_num
 				{
 					file << ":";
 				}
-
 			}
 		}
 
