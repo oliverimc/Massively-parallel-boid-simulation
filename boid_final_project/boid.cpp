@@ -189,7 +189,7 @@ inline Vector3f Boid::NormaliseToMag(Vector3f & vector, float magnitude)
 
 /**
  * \brief  Calculates steering force due to Cohesion behaviour.
- *		   Boid tries to head towards centre of mass of neighbours
+ *		   Boid tries to match it's velocity to average of neighbours.   
  * \param  nearby_boids | Nearby boid buffer to iterate over.
  * \return  | Acceleration due to cohesion steering behaviour
  */
@@ -260,7 +260,8 @@ Vector3f Boid::Separation(vector<tuple<Boid*, float>>& nearby_boids)
 }
 
 /**
- * \brief Calculates force due to alignment behaviour, boid tries to match it's velocity to average of neighbours.   
+ * \brief Calculates force due to alignment behaviour.
+ *		  Boid tries to steer towards centre of mass of neighbours
  * \param  nearby_boids | Nearby boid buffer to iterate over
  * \return  | Acceleration due to alignment behaviour
  */
