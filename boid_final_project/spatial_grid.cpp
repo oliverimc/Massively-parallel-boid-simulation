@@ -2,6 +2,11 @@
 #include "spatial_grid.h"
 #include <iostream>
 
+/*! \file spatial_grid.cpp
+	\brief Implementation of the Spatial Grid class
+
+
+*/
 
 /**
  * \brief   Creates a grid for given simulation details and adds all boids to appropriate cells

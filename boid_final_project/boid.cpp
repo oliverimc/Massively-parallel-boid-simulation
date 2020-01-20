@@ -1,6 +1,11 @@
 #include "pch.h"
 #include "boid.h"
 
+/*! \file boid.cpp
+	\brief Implementation of the boid class
+
+
+*/
 
 
 /**

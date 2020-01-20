@@ -1,6 +1,12 @@
 #include "pch.h"
 #include "communication.h"
 
+/*! \file communication.cpp
+	\brief Functions to handle inter-node communication of data
+
+
+*/
+
 /**
  * \brief  Deserializes all boids represented in float memory to vector of boid objects
  * \param  boids | Boid vector to deserialize to 

@@ -1,6 +1,11 @@
 #include "pch.h"
 #include "worker.h"
 
+/*! \file worker.cpp
+	\brief Implementation of function for running simulation on a worker node
+
+
+*/
 
 using namespace std;
 using namespace Eigen;

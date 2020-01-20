@@ -2,6 +2,12 @@
 #include "master.h"
 
 
+/*! \file master.cpp
+	\brief Implementation of function for running simulation on master node
+
+
+*/
+
 using namespace std;
 using namespace Eigen;
 

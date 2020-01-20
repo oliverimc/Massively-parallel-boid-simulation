@@ -5,15 +5,6 @@
 #include <vector>
 
 
-/*
- * Header: communication.h 
- * -> Methods to manage communication of data across nodes for use in multi-node computations.
- * -> Since MPI cannot natively send custom data types intermediary vector of floats
- *    (referred to as 'memory') is used and Boid objects are serialized to the vector before then being sent
- *	
- *	  
- *
- */
 
 
 void DeSerializeBoids(vector<Boid> &boids, vector<float> &memory);

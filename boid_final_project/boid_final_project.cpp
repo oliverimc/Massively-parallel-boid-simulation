@@ -1,9 +1,3 @@
-// boid_final_project.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
-
-
-
 #include "pch.h"
 #include "preprocessor.h"
 #include "single_node.h"
@@ -17,7 +11,13 @@
 #include<vector>
 #include <fstream>
 #include <chrono>
-#include <ctime> 
+#include <ctime>
+
+
+/*! \file boid_final_project.cpp
+	\brief Main execution file with entry point
+
+*/
 
 using namespace std;
 using namespace Eigen;

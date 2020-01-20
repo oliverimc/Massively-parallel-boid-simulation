@@ -1,5 +1,11 @@
 #pragma once
 
+/*! \file preprocessor.h
+	\brief Constant definitions and Macro functions
+
+
+*/
+
 /**
  * \brief  Number of threads system uses. 
  */
