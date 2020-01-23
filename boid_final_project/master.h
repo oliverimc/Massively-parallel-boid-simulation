@@ -10,4 +10,6 @@
 #include <cmath>
 #include <cstdio>
 #include <fstream>
+
+
 vector<Vector3f> run_master(int rank, int size);
