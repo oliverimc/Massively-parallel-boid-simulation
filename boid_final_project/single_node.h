@@ -3,6 +3,7 @@
 #include "single_node.h"
 #include "boid.h"
 #include "spatial_grid.h"
+#include <fstream>
 #include "Eigen/Dense"
 #include <mpi.h>
 #include <random>
@@ -11,5 +12,4 @@
 
 
 
-
-vector<Vector3f> run(int rank, int size);
+vector<Vector3f> run_single();
