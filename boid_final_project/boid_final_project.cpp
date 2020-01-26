@@ -31,7 +31,7 @@ using namespace Eigen;
  * \param steps | How many steps of data there are in the vector
  * \param boid_number | How many boids there are in the vector
  */
-void write_to_file(string name, vector<Vector3f> &paths, int steps, int boid_number)
+void WriteToFile(string name, vector<Vector3f> &paths, int steps, int boid_number)
 {
 
 	ofstream file;
@@ -105,7 +105,7 @@ int main(int argc, char* argv[])
 		vector<Vector3f> paths = run_single();
 		if (SAVE) 
 		{
-			write_to_file("50-run", paths, STEPS, BOID_NUMBER);
+			WriteToFile("50-run", paths, STEPS, BOID_NUMBER);
 		}
 
 		
@@ -119,7 +119,7 @@ int main(int argc, char* argv[])
 		
 		if (SAVE)
 		{
-			write_to_file("multi-node-0", paths, STEPS, BOID_NUMBER/num_nodes+BOID_NUMBER%num_nodes);
+			WriteToFile("multi-node-0", paths, STEPS, BOID_NUMBER/num_nodes+BOID_NUMBER%num_nodes);
 		}
 	}
 
@@ -129,7 +129,7 @@ int main(int argc, char* argv[])
 
 		if (SAVE)
 		{
-			write_to_file("multi-node-"+to_string(rank), paths, STEPS, BOID_NUMBER / num_nodes);
+			WriteToFile("multi-node-"+to_string(rank), paths, STEPS, BOID_NUMBER / num_nodes);
 		}
 
 	}
