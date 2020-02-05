@@ -50,6 +50,10 @@ vector<Vector3f> run_worker(int rank, int size)
 
 			grid.UpdateNearCells(boids[boid]);
 			boids[boid].Update();
+			if (!(MultiPathIndice(boid, step, boids_per_node, start_index) < paths.size()))
+			{
+				printf("%d ITS FUCKED\n", rank);
+			}
 			paths[MultiPathIndice(boid, step, boids_per_node, start_index)] = boids[boid].GetPosition();
 
 		}

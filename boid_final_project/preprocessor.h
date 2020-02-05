@@ -9,7 +9,7 @@
 /**
  * \brief  Number of threads system uses. 
  */
-constexpr auto THREAD_NUM = 4;
+constexpr auto THREAD_NUM = 1;
 /**
  * \brief  Convince definition for referring to master rank
  */
@@ -17,7 +17,7 @@ constexpr auto MASTER = 0 ;
 /**
  * \brief  Flag to set if paths data will be saved. 
  */
-constexpr auto SAVE = true;
+constexpr auto SAVE = false;
 /**
  * \brief  Sets boids buffer size for nearby boids. Defined in terms of total number of boids.
  *		   i.e 4-> buffer size = boid_number/4
@@ -43,11 +43,11 @@ constexpr auto SEEING_DISTANCE_SQ = SEEING_DISTANCE * SEEING_DISTANCE;
 /**
  * \brief  Number of boids in the simulation 
  */
-constexpr auto BOID_NUMBER = 3000;
+constexpr auto BOID_NUMBER = 500;
 /**
  * \brief  Number of steps to run the simulation for 
  */
-constexpr auto STEPS = 2000;
+constexpr auto STEPS = 500;
 /**
  * \brief  Max speed to which velocity differentials are normalised to.
  *		   Used in calculation of steering forces.
