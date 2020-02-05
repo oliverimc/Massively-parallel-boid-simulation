@@ -9,7 +9,7 @@
 /**
  * \brief  Number of threads system uses. 
  */
-constexpr auto THREAD_NUM = 2;
+constexpr auto THREAD_NUM = 4;
 /**
  * \brief  Convince definition for referring to master rank
  */

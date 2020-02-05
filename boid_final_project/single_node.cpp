@@ -63,7 +63,7 @@ vector<Vector3f> run_single()
 	}
 	double end_time = MPI_Wtime();
 
-	printf("*******Simulations Completed*******");
+	printf("*******Simulation Completed******\n");
 	printf(" --------------------------------\n");
 	printf("|  Number of Boids   |%10d|\n", BOID_NUMBER);
 	printf(" --------------------------------\n");
