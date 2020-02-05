@@ -6,6 +6,7 @@ head_length =7
 if(len(argv)==3):
     base_file_name = argv[1]
     filenames=list(glob.glob(base_file_name+'*'))
+    print(f"Found files: {filenames}. Joining")
     files = [open(name) for name in filenames]
     output = open(argv[2]+".txt", 'w+')
     head_data =[]
@@ -28,6 +29,7 @@ if(len(argv)==3):
         output.write("".join(stripped_streams))
         output.write('\n')
     output.close()
+    print(f"Output to {argv[2]+'.txt'}")
         
 
 else:

@@ -68,14 +68,15 @@ void SpatialGrid::UpdateNearCells(Boid & boid)
  * \brief   Checks if boid has moved grid cells and if so moves its pointer and stores track of changes
  * \param  boid | Boid to update in grid
  * \param  update_tracker | Vector that stores update information for syncing across nodes
+ * \param  size | Rank of node being called on, to determine what routine to run.
  * \return  | Boolean indicating if the boid has moved grid cells
  */
-bool SpatialGrid::UpdateGrid(Boid & boid, vector<int>& update_tracker)
+bool SpatialGrid::UpdateGrid(Boid & boid, vector<int>& update_tracker, int &size)
 {
 	vector<int> old_grid_coord = boid.GetGridCoord();
 	vector<int> new_grid_coord = GetGridCoord(boid);
 
-	if (old_grid_coord != new_grid_coord)
+	if (old_grid_coord != new_grid_coord && size == 1 )
 	{
 		int old_vector_index = GetGridVectorIndex(old_grid_coord);
 		int new_vector_index = GetGridVectorIndex(new_grid_coord);
@@ -84,9 +85,19 @@ bool SpatialGrid::UpdateGrid(Boid & boid, vector<int>& update_tracker)
 		grid[new_vector_index].push_back(&boid);
 		
 		boid.SetGridCoord(new_grid_coord);
+		
+		
+		return true;
+	}
+
+	else if (old_grid_coord != new_grid_coord && size != 1)
+	{
+		int old_vector_index = GetGridVectorIndex(old_grid_coord);
+		int new_vector_index = GetGridVectorIndex(new_grid_coord);
+
 		update_tracker.push_back(old_vector_index);
 		update_tracker.push_back(new_vector_index);
-		
+
 		return true;
 	}
 	
@@ -106,6 +117,7 @@ void SpatialGrid::UpdateGrid(Boid & boid, int old_vector_index, int new_vector_i
 {
 	grid[old_vector_index].remove(&boid);
 	grid[new_vector_index].push_back(&boid);
+
 	vector<int> boid_grid_coord = GetGridCoord(new_vector_index);
 	boid.SetGridCoord(boid_grid_coord);
 }

@@ -15,7 +15,7 @@ public:
 	~SpatialGrid() = default;
 
 	void UpdateNearCells(Boid &boid);
-	bool UpdateGrid(Boid &boid, vector<int> &update_tracker);
+	bool UpdateGrid(Boid &boid, vector<int> &update_tracker, int &size);
 	void UpdateGrid(Boid &boid, int old_pos, int new_pos);
 
 private:

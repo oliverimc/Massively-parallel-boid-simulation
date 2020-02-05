@@ -61,7 +61,7 @@ vector<Vector3f> run_worker(int rank, int size)
 
 		for (int boid = start_index; boid < end_index; boid++)
 		{
-			if (grid.UpdateGrid(boids[boid], grid_updates))
+			if (grid.UpdateGrid(boids[boid], grid_updates,size))
 			{
 				grid_updates.push_back(boid);
 			}

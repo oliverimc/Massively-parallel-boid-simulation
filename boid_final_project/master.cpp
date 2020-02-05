@@ -20,8 +20,8 @@ using namespace Eigen;
  */
 vector<Vector3f> run_master(int rank, int size)
 {
-	
-	
+
+
 	random_device rand_dev;
 	default_random_engine ran_num_gen(rand_dev());
 	uniform_real_distribution<float> position_distribution(LENGTH / 4, 3 * LENGTH / 4);
@@ -30,7 +30,7 @@ vector<Vector3f> run_master(int rank, int size)
 	vector<Boid> boids(BOID_NUMBER);
 	vector<float> boid_memory(BOID_NUMBER * 6); // pre-allocated contigous memory to de/serialise the boid data to for sending with MPI
 	vector<int> grid_updates; //vector representing updates to the grid. Each update adds three integers: old spatial grid vector index, new grid vector index, boids vector index
-	
+
 
 	int boids_per_worker_node = floor(BOID_NUMBER / size);
 	int boids_on_master = BOID_NUMBER / size + BOID_NUMBER % size;
@@ -45,7 +45,7 @@ vector<Vector3f> run_master(int rank, int size)
 		boid.SetRanValues(ran_num_gen, velocity_distribution, position_distribution);
 	}
 
-	
+
 	SpatialGrid grid(boids);
 
 	BroadcastSendBoids(boids, boid_memory, MASTER);
@@ -57,34 +57,34 @@ vector<Vector3f> run_master(int rank, int size)
 	{
 
 		grid_updates.resize(0);
-		
-		
-		#pragma omp parallel for schedule(SCHEDULE)
+
+
+#pragma omp parallel for schedule(SCHEDULE)
 		for (int boid = start_index; boid < end_index; boid++)
 		{
 
 			grid.UpdateNearCells(boids[boid]);
 			boids[boid].Update();
 			paths[MultiPathIndice(boid, step, boids_on_master, start_index)] = boids[boid].GetPosition();
-			
+
 		}
-		
+
 
 
 		for (int boid = start_index; boid < end_index; boid++)
 		{
-			if (grid.UpdateGrid(boids[boid], grid_updates))
+			if (grid.UpdateGrid(boids[boid], grid_updates, size))
 			{
 				grid_updates.push_back(boid);
 			}
 		}
-		
+
 		for (int node = 1; node < size; node++)
 		{
 			ReceiveBoids(boids, node_boid_memory, node, MASTER, (node - 1)*boids_per_worker_node, node*boids_per_worker_node);
 
 		}
-		
+
 		for (int node = 1; node < size; node++)
 		{
 			vector<int> node_grid_updates;
@@ -92,13 +92,13 @@ vector<Vector3f> run_master(int rank, int size)
 			grid_updates.insert(grid_updates.end(), node_grid_updates.begin(), node_grid_updates.end());
 
 		}
-	
+
 		for (unsigned int i = 0; i < grid_updates.size(); i += 3)
 		{
 			grid.UpdateGrid(boids[grid_updates[i + 2]], grid_updates[i], grid_updates[i + 1]);
-			
+
 		}
-		
+
 
 		BroadcastSendGridUpdates(grid_updates, MASTER);
 		BroadcastSendBoids(boids, boid_memory, MASTER);
@@ -116,19 +116,19 @@ vector<Vector3f> run_master(int rank, int size)
 
 	printf("%d:%d:%d:%d:%f\n", BOID_NUMBER, size, THREAD_NUM, size*THREAD_NUM, end_t - start_t);
 
-	
 
 
 
 
 
 
-	
+
+
 
 
 	return paths;
 
-	
+
 
 
 

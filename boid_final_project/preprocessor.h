@@ -17,7 +17,7 @@ constexpr auto MASTER = 0 ;
 /**
  * \brief  Flag to set if paths data will be saved. 
  */
-constexpr auto SAVE = false;
+constexpr auto SAVE = true;
 /**
  * \brief  Sets boids buffer size for nearby boids. Defined in terms of total number of boids.
  *		   i.e 4-> buffer size = boid_number/4
@@ -35,7 +35,7 @@ constexpr auto LENGTH = 1000;
 /**
  * \brief  Cutoff range for which neighbours cause effect on a boid. 
  */
-constexpr auto SEEING_DISTANCE = 50;
+constexpr auto SEEING_DISTANCE = 100;
 /**
  * \brief  Convenience definition for distance magnitude comparisons. 
  */
@@ -43,11 +43,11 @@ constexpr auto SEEING_DISTANCE_SQ = SEEING_DISTANCE * SEEING_DISTANCE;
 /**
  * \brief  Number of boids in the simulation 
  */
-constexpr auto BOID_NUMBER = 500;
+constexpr auto BOID_NUMBER = 2000;
 /**
  * \brief  Number of steps to run the simulation for 
  */
-constexpr auto STEPS = 500;
+constexpr auto STEPS = 1000;
 /**
  * \brief  Max speed to which velocity differentials are normalised to.
  *		   Used in calculation of steering forces.

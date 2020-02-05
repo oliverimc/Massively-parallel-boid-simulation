@@ -17,7 +17,7 @@ using namespace Eigen;
  */
 vector<Vector3f> run_single()
 {
-
+	int size = 1;
 	random_device rand_dev;
 	default_random_engine ran_num_gen(rand_dev());
 	uniform_real_distribution<float> position_distribution(LENGTH / 4, 3 * LENGTH / 4);
@@ -56,7 +56,7 @@ vector<Vector3f> run_single()
 		
 		for (int boid = 0; boid < BOID_NUMBER; boid++)
 		{
-			grid.UpdateGrid(boids[boid], grid_updates);
+			grid.UpdateGrid(boids[boid], grid_updates, size);
 		}
 		
 
