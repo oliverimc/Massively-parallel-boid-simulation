@@ -52,7 +52,7 @@ vector<Vector3f> run_master(int rank, int size)
 
 
 
-	double start_t = MPI_Wtime();
+	double start_time = MPI_Wtime();
 	for (int step = 0; step < STEPS; step++)
 	{
 
@@ -112,19 +112,21 @@ vector<Vector3f> run_master(int rank, int size)
 
 
 	}
-	double end_t = MPI_Wtime();
+	double end_time = MPI_Wtime();
 
-	printf("%d:%d:%d:%d:%f\n", BOID_NUMBER, size, THREAD_NUM, size*THREAD_NUM, end_t - start_t);
-
-
-
-
-
-
-
-
-
-
+	printf(" --------------------------------\n");
+	printf("|  Number of Boids   |%10d|\n", BOID_NUMBER);
+	printf(" --------------------------------\n");
+	printf("|  Number of Steps   |%10d|\n", STEPS);
+	printf(" -------------------------------\n");
+	printf("|   Number of Nodes  |%10d|\n", size);
+	printf(" -------------------------------\n");
+	printf("|Number of Processors|%10d|\n", THREAD_NUM);
+	printf(" --------------------------------\n");
+	printf("|  Total Processors  |%10d|\n", size*THREAD_NUM);
+	printf(" --------------------------------\n");
+	printf("|    Time taken/s    |%10f|\n", end_time - start_time);
+	printf(" --------------------------------\n");
 
 	return paths;
 

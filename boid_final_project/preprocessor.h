@@ -9,7 +9,7 @@
 /**
  * \brief  Number of threads system uses. 
  */
-constexpr auto THREAD_NUM = 1;
+constexpr auto THREAD_NUM = 2;
 /**
  * \brief  Convince definition for referring to master rank
  */
@@ -17,7 +17,7 @@ constexpr auto MASTER = 0 ;
 /**
  * \brief  Flag to set if paths data will be saved. 
  */
-constexpr auto SAVE = true;
+constexpr auto SAVE = false;
 /**
  * \brief  Sets boids buffer size for nearby boids. Defined in terms of total number of boids.
  *		   i.e 4-> buffer size = boid_number/4
