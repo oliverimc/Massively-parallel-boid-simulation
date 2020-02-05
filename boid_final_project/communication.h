@@ -19,7 +19,7 @@ void BroadcastSendBoids(vector<Boid>& boids, vector<float>& memory, int rank);
 
 void BroadcastReceiveBoids(vector<Boid>& boids, vector<float>& memory, int rank);
 
-void SendBoids(vector<Boid>& boids, vector<float>& memory, int source, int destination, int start, int stop);
+void SendBoids(vector<Boid>& boids, vector<float>& memory, int destination, int start, int stop);
 
 void ReceiveBoids(vector<Boid>& boids, vector<float>& memory, int source, int destination, int start, int stop);
 

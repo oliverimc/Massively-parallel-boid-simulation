@@ -68,7 +68,7 @@ vector<Vector3f> run_worker(int rank, int size)
 		}
 	
 
-		SendBoids(boids, node_boid_memory, rank, MASTER, start_index, end_index);
+		SendBoids(boids, node_boid_memory, MASTER, start_index, end_index);
 		SendGridUpdates(grid_updates, MASTER);
 		
 

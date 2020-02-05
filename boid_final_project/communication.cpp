@@ -97,12 +97,11 @@ void BroadcastReceiveBoids(vector<Boid>& boids, vector<float>& memory, int rank)
  *			allowing direct send of selection of vector of boid objects.
  * \param  boids | Boid vector to send
  * \param  memory | Intermediary float vector to serialize to from which MPI can send from
- * \param  source | Source node MPI rank
  * \param  destination | Destination node MPI rank
  * \param  start | Boid vector start index of selection to send
  * \param  stop | Boid vector end index of selection to send
  */
-void SendBoids(vector<Boid>& boids, vector<float>& memory, int source, int destination, int start, int stop)
+void SendBoids(vector<Boid>& boids, vector<float>& memory, int destination, int start, int stop)
 {
 	SerializeBoids(boids, memory, start, stop);
 	MPI_Send(&memory[0], memory.size(), MPI_FLOAT, destination, 5, MPI_COMM_WORLD);
