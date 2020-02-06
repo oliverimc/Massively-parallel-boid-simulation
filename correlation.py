@@ -1,7 +1,11 @@
 from sys import argv
 from numpy import array
+from numpy import zeros
 from matplotlib import pyplot as plt
 from tqdm import tqdm
+from pandas import DataFrame
+from itertools import product
+from scipy.stats import pearsonr
 
 head_length =7
 posistions =[]
@@ -17,8 +21,10 @@ if __name__ == "__main__":
         for line in tqdm(file):
             pos_vector_string = line.split('$')[:-1]
             boid_posistions = []
+           
             for pos_string in pos_vector_string:
                 value_strings = pos_string.split(":")
+               
                 try:
                     values = [float(value) for value in value_strings]
                 except:
@@ -29,18 +35,23 @@ if __name__ == "__main__":
             posistions.append(boid_posistions)
     
     posistions = array(posistions)
-    boid1 = posistions[:,1]
-    boid2 = posistions[:,2]
-    print(boid1)
-    print(boid2)
+    posistion_frames =  [DataFrame(posistions[:,i],columns = list("xyz")) for i in range(len(posistions))]
+ 
 
+    num_boids= len(posistion_frames[0]['x'])
+    correlations = zeros((num_boids,num_boids))
 
-    fig, axs = plt.subplots(3)
-    steps = range(1,1001)
+    for ind1,boid1 in tqdm(enumerate(posistion_frames)):
+        for ind2,boid2 in enumerate(posistion_frames):
+            xr,xp = pearsonr(boid1['x'],boid2['x'])
+            yr,yp = pearsonr(boid1['y'],boid2['y'])
+            zr,zp = pearsonr(boid1['z'],boid2['z'])
+            correlations[ind1,ind2] = sum([xr,yr,zr])/3
 
-    for i in range(3):
-        axs[i].plot(steps,boid1[:,i])
-        axs[i].plot(steps,boid2[:,i])
-    
+       
+
+    print(correlations[:,1])
+    plt.scatter(range(1,len(correlations)+1), correlations[:,1])
     plt.show()
-        
+
+   
