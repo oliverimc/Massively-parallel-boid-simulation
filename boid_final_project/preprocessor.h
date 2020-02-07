@@ -62,7 +62,7 @@ constexpr auto MAX_FORCE = 0.5;
  * \brief  Weighting factor for cohesion acceleration component
  *		   Altering changes behaviour of the system
  */
-constexpr auto COHESION_FACTOR = 1.01;
+constexpr auto COHESION_FACTOR = 1;
 /**
  * \brief  Weighting factor for alignment acceleration component
  *		   Altering changes behaviour of the system
@@ -72,7 +72,7 @@ constexpr auto ALIGNMENT_FACTOR = 1;
  * \brief  Weighting factor for separation acceleration component
  *		   Altering changes behaviour of the system
  */
-constexpr auto SEPARATION_FACTOR = 1.06;
+constexpr auto SEPARATION_FACTOR = 1.05;
 /**
  * \brief  Type of OpenMP thread distribution to split work for thread team 
  */
