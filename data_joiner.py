@@ -6,6 +6,10 @@ head_length =7
 if(len(argv)==3):
     base_file_name = argv[1]
     filenames=list(glob.glob(base_file_name+'*'))
+    if(not filenames):
+        print(f"Could not find any files of the form {argv[1]}*")
+        exit()
+
     print(f"Found files: {filenames}. Joining")
     files = [open(name) for name in filenames]
     output = open(argv[2]+".txt", 'w+')
