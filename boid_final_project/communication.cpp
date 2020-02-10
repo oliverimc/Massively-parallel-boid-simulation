@@ -9,19 +9,19 @@
 
 /**
  * \brief  Deserializes all boids represented in float memory to vector of boid objects
- * \param  boids | Boid vector to deserialize to 
+ * \param  boids | Boid vector to deserialize to
  * \param  memory | Flot vector to deserialize from
  */
 void DeSerializeBoids(vector<Boid>& boids, vector<float>& memory)
 {
 	for (unsigned int boid = 0; boid < boids.size(); boid++)
 	{
-		boids[boid].DeSerialize(memory, boid*6);
+		boids[boid].DeSerialize(memory, boid * 6);
 	}
 }
 
 /**
- * \brief   Deserializes boids in a selected range of the float memory to vector of boid objects	
+ * \brief   Deserializes boids in a selected range of the float memory to vector of boid objects
  * \param  boids | Boid vector to deserialize to
  * \param  memory | Float vector to deserialize from
  * \param  start | Vector start index
@@ -29,28 +29,28 @@ void DeSerializeBoids(vector<Boid>& boids, vector<float>& memory)
  */
 void DeSerializeBoids(vector<Boid>& boids, vector<float>& memory, int start, int end)
 {
-	for ( int boid = start; boid < end; boid++)
+	for (int boid = start; boid < end; boid++)
 	{
-		boids[boid].DeSerialize(memory, (boid-start) * 6);
+		boids[boid].DeSerialize(memory, (boid - start) * 6);
 	}
 }
 
 
 /**
- * \brief   Serializes all boids from vector of boid objects to vector float memory.
+ * \brief   Serializes all boids from vector of boid objects to vector of floats
  * \param  boids | Boid vector to serialize from
  * \param  memory | Float vector to serialize to
  */
 void SerializeBoids(vector<Boid>& boids, vector<float>& memory)
 {
-	for ( unsigned int boid = 0; boid < boids.size(); boid++)
+	for (int boid = 0; boid < boids.size(); boid++)
 	{
 		boids[boid].Serialize(memory, boid * 6);
 	}
 }
 
 /**
- * \brief   Serializes selected boids from vector of boid objects to vector float memory
+ * \brief   Serializes selected boids from vector of boid objects to vector of floats
  * \param  boids | Boid vector to serialize from
  * \param  memory | Float vector to serialize to
  * \param  start | Boid vector index to start serializing at
@@ -58,7 +58,7 @@ void SerializeBoids(vector<Boid>& boids, vector<float>& memory)
  */
 void SerializeBoids(vector<Boid>& boids, vector<float>& memory, int start, int end)
 {
-	for ( int boid = start; boid < end; boid++)
+	for (int boid = start; boid < end; boid++)
 	{
 		boids[boid].Serialize(memory, (boid - start) * 6);
 	}
@@ -113,7 +113,7 @@ void SendBoids(vector<Boid>& boids, vector<float>& memory, int destination, int 
 /**
  * \brief  MPI receive routine integrated with deserialization
  *		   allowing direct receiving of vector of boids from another node
- * \param  boids | Vector of boids to receive to	
+ * \param  boids | Vector of boids to receive to
  * \param  memory | Intermediary float vector for MPI to receive to and be deserialized
  * \param  source | Source node MPI rank
  * \param  destination | Destination node MPI rank
@@ -132,7 +132,7 @@ void ReceiveBoids(vector<Boid>& boids, vector<float>& memory, int source, int de
 /**
  * \brief  Double MPI Send routine enabling sending of dynamically sized vector containing grid updates.
  *		   Allows sending of grid update data to keep nodes copy of spatial grid in sync.
- * \param  updates | Grdi updates vector containing data to send
+ * \param  updates | Grid updates vector containing data to send
  * \param  destination | Destination node MPI rank
  */
 void SendGridUpdates(vector<int> &updates, int destination)
@@ -143,7 +143,7 @@ void SendGridUpdates(vector<int> &updates, int destination)
 	{
 		MPI_Send(&updates[0], size, MPI_INT, destination, 6, MPI_COMM_WORLD);
 	}
-	
+
 
 }
 
@@ -165,7 +165,7 @@ void ReceiveGridUpdates(vector<int> &updates, int source)
 		MPI_Recv(&updates[0], size, MPI_INT, source, 6, MPI_COMM_WORLD, &stat);
 
 	}
-	else 
+	else
 	{
 		updates.resize(0);
 	}

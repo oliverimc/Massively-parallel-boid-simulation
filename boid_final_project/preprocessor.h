@@ -22,8 +22,8 @@ constexpr auto SAVE = false;
  * \brief  Sets boids buffer size for nearby boids. Defined in terms of total number of boids.
  *		   i.e 4-> buffer size = boid_number/4
  *		   Buffer needs to be as big as largest possible number of neighbours a boid can have.
- *		   Hence value dependent on Seeing distance.
- *		   Experimentally seeing distance = 100 , fraction = 4 and 200 , 2 are appropriate.
+ *		   Hence value dependent on range of sight.
+ *		   Experimentally sight range = 100 , fraction = 4 and 200 , 2 are appropriate.
  */
 constexpr auto BUFFER_FRACTION = 4 ;
 /**
