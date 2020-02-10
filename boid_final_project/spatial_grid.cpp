@@ -66,9 +66,10 @@ void SpatialGrid::UpdateNearCells(Boid & boid)
 
 /**
  * \brief   Checks if boid has moved grid cells and if so moves its pointer and stores track of changes
+ *			Alters behaviour on multi-node system to avoid double adding boid when it switches cell.
  * \param  boid | Boid to update in grid
  * \param  update_tracker | Vector that stores update information for syncing across nodes
- * \param  size | Rank of node being called on, to determine what routine to run.
+ * \param  size | Number of nodes of system, to determine what routine to run.
  * \return  | Boolean indicating if the boid has moved grid cells
  */
 bool SpatialGrid::UpdateGrid(Boid & boid, vector<int>& update_tracker, int &size)
@@ -147,7 +148,7 @@ int SpatialGrid::GetGridVectorIndex(int & x, int & y, int & z) const
 }
 
 /**
- * \brief   Uses a boids posistion to work out which grid cell it currently is in.
+ * \brief   Uses a boids position to work out which grid cell it currently is in.
  * \param  boid | Boid to work out co-ordinates
  * \return  | Grid co-ordinates of boid
  */
