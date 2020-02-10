@@ -11,7 +11,7 @@
  */
 constexpr auto THREAD_NUM = 4;
 /**
- * \brief  Convince definition for referring to master rank
+ * \brief  Convenience definition for referring to master rank
  */
 constexpr auto MASTER = 0 ;
 /**
@@ -35,11 +35,11 @@ constexpr auto LENGTH = 1000;
 /**
  * \brief  Cutoff range for which neighbours cause effect on a boid. 
  */
-constexpr auto SEEING_DISTANCE = 100;
+constexpr auto SIGHT_RANGE = 100;
 /**
  * \brief  Convenience definition for distance magnitude comparisons. 
  */
-constexpr auto SEEING_DISTANCE_SQ = SEEING_DISTANCE * SEEING_DISTANCE;
+constexpr auto SIGHT_RANGE_SQ = SIGHT_RANGE * SIGHT_RANGE;
 /**
  * \brief  Number of boids in the simulation 
  */
@@ -50,12 +50,12 @@ constexpr auto BOID_NUMBER = 2000;
 constexpr auto STEPS = 1000;
 /**
  * \brief  Max speed to which velocity differentials are normalised to.
- *		   Used in calculation of steering forces.
+ *		   Used in calculation of steering forces
  */
 constexpr auto MAX_SPEED = 3.0;
 /**
  * \brief  Max Force used to normalise final steering forces. In combination
- *		   with max speed can be altered to effect behaviour of the system.
+ *		   with max speed can be altered to effect behaviour of the system
  */
 constexpr auto MAX_FORCE = 0.5;
 /**
@@ -77,11 +77,6 @@ constexpr auto SEPARATION_FACTOR = 1.05;
  * \brief  Type of OpenMP thread distribution to split work for thread team 
  */
 #define SCHEDULE guided
-/**
- * \brief   Convenience print function with new line
- * \param  val | Value to be printed.
- */
-#define print(val) std::cout<< val << std::endl;
 /**
  * \brief  Multi-dimensional indexing of 1D paths vector 
  * \param  boid | boid index

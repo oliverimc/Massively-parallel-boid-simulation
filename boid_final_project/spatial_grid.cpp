@@ -14,7 +14,7 @@
  */
 SpatialGrid::SpatialGrid(vector<Boid> &boids)
 {
-	cell_num = floor(LENGTH / SEEING_DISTANCE); // number & size of cells calculated off seeing distance so 27 adjacent will always contain all boids within range
+	cell_num = floor(LENGTH / SIGHT_RANGE); // number & size of cells calculated off seeing distance so 27 adjacent will always contain all boids within range
 	cell_length = float(LENGTH) / float(cell_num);
 	grid.resize(cell_num*cell_num*cell_num);
 

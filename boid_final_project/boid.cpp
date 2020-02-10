@@ -163,7 +163,7 @@ void Boid::GetNearbyBoids()
 		{
 		    float distance_squared = (boid->GetPosition() -position_).squaredNorm();
 			
-			if (distance_squared != 0 && distance_squared < SEEING_DISTANCE_SQ)
+			if (distance_squared != 0 && distance_squared < SIGHT_RANGE_SQ)
 			{
 				//only calculates square root for boids that are nearby to reduce number of expensive calls to sqrt()
 				
