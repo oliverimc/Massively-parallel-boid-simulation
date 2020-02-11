@@ -3,10 +3,7 @@
 
 /*! \file single_node.cpp
 	\brief Implementation of the simulation for running on a single node
-
-
 */
-
 
 using namespace std;
 using namespace Eigen;
@@ -27,12 +24,10 @@ vector<Vector3f> run_single()
 	vector<int> grid_updates;
 	vector<Vector3f> paths(BOID_NUMBER*STEPS);
 
-
 	for (Boid &boid : boids)
 	{
 		boid.SetRanValues(ran_num_gen, velocity_distribution, position_distribution);
 	}
-
 
 	SpatialGrid grid(boids);
 
@@ -41,25 +36,18 @@ vector<Vector3f> run_single()
 	{
 		grid_updates.resize(0);
 		
-		
-
 		#pragma omp parallel for schedule(SCHEDULE)
 		for (int boid = 0; boid < BOID_NUMBER; boid++)
 		{
-
-
 			grid.UpdateNearCells(boids[boid]);
 			boids[boid].Update();
 			paths[PathIndice(boid, step, BOID_NUMBER)] = boids[boid].GetPosition();
-
 		}
-		
+		//GRID updated with only thread to avoid race conditions.
 		for (int boid = 0; boid < BOID_NUMBER; boid++)
 		{
 			grid.UpdateGrid(boids[boid], grid_updates, size);
 		}
-		
-
 	}
 	double end_time = MPI_Wtime();
 

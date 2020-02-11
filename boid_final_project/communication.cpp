@@ -42,7 +42,7 @@ void SerializeBoids(vector<Boid>& boids, vector<float>& memory)
 {
 	for (int boid = 0; boid < boids.size(); boid++)
 	{
-		boids[boid].Serialize(memory, boid * *SYS_DIM * 2);
+		boids[boid].Serialize(memory, boid*SYS_DIM * 2);
 	}
 }
 
@@ -103,7 +103,7 @@ void SendBoids(vector<Boid>& boids, vector<float>& memory, int destination, int 
 
 /**
  * \brief  MPI receive routine integrated with deserialization
- *		   allowing direct receiving of vector of boids from another node
+ *		   allowing direct receiving of vector of boids from another node.
  * \param  boids | Vector of boids to receive to
  * \param  memory | Intermediary float vector for MPI to receive to and be deserialized
  * \param  source | Source node MPI rank
