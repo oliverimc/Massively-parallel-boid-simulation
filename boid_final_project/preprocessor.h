@@ -59,7 +59,7 @@ constexpr auto BOID_NUMBER = 2000;
 /**
  * \brief  Number of steps to run the simulation for.
  */
-constexpr auto STEPS = 1000;
+constexpr auto STEPS = 3000;
 
 /**
  * \brief  Max speed to which velocity differentials are normalised to.

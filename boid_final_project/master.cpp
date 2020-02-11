@@ -76,7 +76,7 @@ vector<Vector3f> run_master(int rank, int size)
 			grid_updates.insert(grid_updates.end(), node_grid_updates.begin(), node_grid_updates.end());
 		}
 		//Update masters copy of the grid with updates from all nodes and itself
-		for (int i = 0; i < grid_updates.size(); i += 3)
+		for (int i = 0; i < grid_updates.size(); i += SYS_DIM)
 		{
 			grid.UpdateGrid(boids[grid_updates[i + 2]], grid_updates[i], grid_updates[i + 1]);
 		}

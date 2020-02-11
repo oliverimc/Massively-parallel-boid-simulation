@@ -49,10 +49,10 @@ void WriteToFile(string name, vector<Vector3f> &paths, int steps, int boid_numbe
 		{
 			Vector3f position = paths[PathIndice(boid,step,boid_number)];
 
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < SYS_DIM; i++)
 			{
 				file << position[i];
-				if (i == 2)
+				if (i == (SYS_DIM-1))
 				{
 					file << "$";
 				}

@@ -18,7 +18,8 @@ vector<Vector3f> run_worker(int rank, int size)
 {
 	vector<Boid> boids(BOID_NUMBER);
 	vector<float> boid_memory(BOID_NUMBER * SYS_DIM * 2);
-	vector<int> grid_updates; //vector representing an update to the grid. Each update adds three integers: old spatial grid vector index, new grid vector index, boids vector index
+	vector<int> grid_updates; //vector representing an update to the grid.
+							  //Each update adds three integers: old spatial grid vector index, new grid vector index, boids vector index
 
 	int boids_per_node = floor(BOID_NUMBER / size);
 	int start_index = (rank - 1)*boids_per_node;
@@ -59,7 +60,7 @@ vector<Vector3f> run_worker(int rank, int size)
 		BroadcastReceiveGridUpdates(grid_updates, MASTER);
 		BroadcastReceiveBoids(boids, boid_memory, MASTER);
 			   		 
-		for (int i = 0; i < grid_updates.size(); i += 3)
+		for (int i = 0; i < grid_updates.size(); i += SYS_DIM)
 		{
 			grid.UpdateGrid(boids[grid_updates[i + 2]], grid_updates[i], grid_updates[i + 1]);
 		}

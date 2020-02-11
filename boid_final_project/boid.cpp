@@ -54,10 +54,10 @@ void Boid::SetRanValues(default_random_engine & random_engine, uniform_real_dist
  */
 void Boid::Serialize(vector<float>& memory, int start_location)
 {
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < SYS_DIM; i++)
 	{
 		memory[start_location + i] = position_[i];
-		memory[start_location + 3 + i] = velocity_[i];
+		memory[start_location + SYS_DIM + i] = velocity_[i];
 	}
 }
 
@@ -68,10 +68,10 @@ void Boid::Serialize(vector<float>& memory, int start_location)
  */
 void Boid::DeSerialize(vector<float>& memory, int start_location)
 {
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < SYS_DIM; i++)
 	{
 		position_[i] = memory[start_location + i];
-		velocity_[i] = memory[start_location + 3 + i];
+		velocity_[i] = memory[start_location + SYS_DIM + i];
 	}
 }
 
