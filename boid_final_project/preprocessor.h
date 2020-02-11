@@ -62,14 +62,14 @@ constexpr auto BOID_NUMBER = 2000;
 constexpr auto STEPS = 3000;
 
 /**
- * \brief  Max speed to which velocity differentials are normalised to.
+ * \brief  Max speed to which velocity differentials are normalised to.  (Arbitrary units)
  *		   Used in calculation of steering forces
  */
 constexpr auto MAX_SPEED = 3.0;
 
 /**
- * \brief  Max Force used to normalise final steering forces. In combination
- *		   with max speed can be altered to effect behaviour of the system
+ * \brief  Max Force used to normalise final steering forces. (Arbitrary units)
+ *		   In combination with max speed can be altered to effect behaviour of the system.
  */
 constexpr auto MAX_FORCE = 0.5;
 

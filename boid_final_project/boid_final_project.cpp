@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
 		vector<Vector3f> paths = run_single();
 		if (SAVE) 
 		{
-			WriteToFile("50-run", paths, STEPS, BOID_NUMBER);
+			WriteToFile("single-node-results", paths, STEPS, BOID_NUMBER);
 		}
 	}
 

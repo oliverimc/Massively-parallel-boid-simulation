@@ -31,7 +31,6 @@ public:
 	void Serialize(vector<float> &memory, int start_location);
 	void DeSerialize(vector<float> &memory, int start_location);
 
-
 	Vector3f GetPosition() const;
     Vector3f GetVelocity() const;
 	vector<list<Boid*>*> GetNeighbourBuffer() const;
@@ -50,7 +49,6 @@ private:
 	vector<tuple<Boid*, float>> nearby_boid_buffer_; //pre-allocated memory for storing pointers to nearby boids and their distances which is then iterated through in Cohesion... etc
 	int buffer_end_index_{}; // on each update stores how many boids were nearby and where to iterate to
 	
-
 	void UpdateEdges();
 	void GetNearbyBoids();
 
@@ -60,7 +58,5 @@ private:
 	Vector3f Separation(vector<tuple<Boid*, float>> &nearby_boids);
 	Vector3f Alignment(vector<tuple<Boid*, float>> &nearby_boids);
 	
-
-
 };
 
