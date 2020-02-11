@@ -3,28 +3,24 @@
 
 /*! \file boid.cpp
 	\brief Implementation of the boid class
-
-
 */
 
-
 /**
- * \brief  Constructor. Initializes internal variables and allocates required memory for cell and nearby boid buffers. 
+ * \brief  Constructor: Initializes internal variables and allocates required memory for cell and nearby boid buffers. 
  */
 Boid::Boid()
 {
 	position_ = Vector3f::Zero();
 	velocity_ = Vector3f::Zero();
 	acceleration_ = Vector3f::Zero();
-	grid_coord_.resize(3);
+	grid_coord_.resize(SYS_DIM);
 	neighbouring_cells_buffer_.resize(27);
 	nearby_boid_buffer_.resize(BOID_NUMBER / BUFFER_FRACTION); // Over allocates to save time associated with dynamic allocation. 
 }
 
-
 /**
- * \brief  Main update loop. Finds nearby boids in local cells, calculates steering forces and weights them by provided coefficients and then updates
- *         kinematic variables. Boundary conditions are imposed and variables reset for next update loop.
+ * \brief  Main update loop. Finds nearby boids in local cells, calculates steering forces and weights them by provided coefficients.
+ *		   Then updates kinematic variables. Boundary conditions are imposed and variables reset for next update loop.
  */
 void Boid::Update()
 {
@@ -40,11 +36,11 @@ void Boid::Update()
  * \brief  Sets the boids position and velocity to a random value according to provided distributions. 
  * \param  random_engine | Random number generator
  * \param  vel_distr | Probability distribution of the velocity values
- * \param  pos_distr | Probability distribution of the posistion values
+ * \param  pos_distr | Probability distribution of the position values
  */
 void Boid::SetRanValues(default_random_engine & random_engine, uniform_real_distribution<float>& vel_distr, uniform_real_distribution<float>& pos_distr)
 {
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < SYS_DIM; i++)
 	{
 		velocity_[i] = vel_distr(random_engine);
 		position_[i] = pos_distr(random_engine);
@@ -52,7 +48,7 @@ void Boid::SetRanValues(default_random_engine & random_engine, uniform_real_dist
 }
 
 /**
- * \brief  Serializes boid object into 6 floats that represent it and stores values in the provided vector at specified location
+ * \brief  Serializes boid object into 6 floats in the provided vector at specified location.
  * \param  memory | Float vector where the values should be stored
  * \param  start_location | Index of the vector where the values should be stored from
  */
@@ -62,15 +58,13 @@ void Boid::Serialize(vector<float>& memory, int start_location)
 	{
 		memory[start_location + i] = position_[i];
 		memory[start_location + 3 + i] = velocity_[i];
-
 	}
-
 }
 
 /**
- * \brief  Deserializes boid object from  6 floats in a vector
- * \param  memory | Float vector from which to find the values from
- * \param  start_location | Start index off the vector from which to get the values from.
+ * \brief  Deserializes boid object from  6 floats in vector.
+ * \param  memory | Float vector to get values from
+ * \param  start_location | Start index off the vector where values located
  */
 void Boid::DeSerialize(vector<float>& memory, int start_location)
 {
@@ -78,9 +72,7 @@ void Boid::DeSerialize(vector<float>& memory, int start_location)
 	{
 		position_[i] = memory[start_location + i];
 		velocity_[i] = memory[start_location + 3 + i];
-
 	}
-
 }
 
 /**
@@ -117,7 +109,6 @@ vector<list<Boid*>*> Boid::GetNeighbourBuffer() const
 vector<int> Boid::GetGridCoord() const
 {
 	return grid_coord_;
-		
 }
 
 /**
@@ -130,11 +121,11 @@ void Boid::SetGridCoord(vector<int>& grid_coord)
 }
 
 /**
- * \brief  Checks if boid position is out of bounds of simulation space and if so implements boundary conditions 
+ * \brief  Checks if boid position is out of bounds of simulation space and if so implements boundary conditions.
  */
 void Boid::UpdateEdges()
 {
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < SYS_DIM; i++)
 	{
 		if (position_[i] > LENGTH)
 		{
@@ -143,15 +134,13 @@ void Boid::UpdateEdges()
 		else if (position_[i] < 0)
 		{
 			position_[i] = LENGTH;
-		}
-			   
+		}   
 	}
-
 }
 
 /**
- * \brief  Iterates over the cells provided by the grid and finds which boids are within range and stores them in the buffer for use in
- *		   steering calculations
+ * \brief  Iterates over the cells provided by the grid and finds which boids are within range.
+ *		   Then stores them in the buffer for use in steering calculations.
  */
 void Boid::GetNearbyBoids()
 {
@@ -169,13 +158,11 @@ void Boid::GetNearbyBoids()
 				
 				get<0>(nearby_boid_buffer_[i]) = boid;
 				get<1>(nearby_boid_buffer_[i]) = sqrt(distance_squared);
-				i++;
-					
+				i++;	
 			}
 		}
 	}
-
-	
+		
 	buffer_end_index_ = i; //So that the steering functions know where to iterate to
 }
 
@@ -266,7 +253,7 @@ Vector3f Boid::Separation(vector<tuple<Boid*, float>>& nearby_boids)
 
 /**
  * \brief Calculates force due to alignment behaviour.
- *		  Boid tries to steer towards centre of mass of neighbours
+ *		  Boid tries to steer towards centre of mass of neighbours.
  * \param  nearby_boids | Nearby boid buffer to iterate over
  * \return  | Acceleration due to alignment behaviour
  */

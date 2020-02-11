@@ -2,7 +2,7 @@
 #include "boid.h"
 #include <vector>
 #include <list>
-#include <cmath>
+#include <math.h>
 
 
 /**
@@ -19,11 +19,11 @@ public:
 	void UpdateGrid(Boid &boid, int old_pos, int new_pos);
 
 private:
-
+	
 	int cell_num;
 	float cell_length;
 	vector<list<Boid*>> grid; //Grid holds pointers to boids not boid itself to reduce memory and speed up access.
-							  //Each cell corresponds to doubly linked list for quick insertion/removal
+							  //Each cell corresponds to doubly linked list for quick insertion/removal.
 
 	int GetGridVectorIndex(vector<int> &grid_index) const;
 	int GetGridVectorIndex(int &x, int &y, int &z) const;
