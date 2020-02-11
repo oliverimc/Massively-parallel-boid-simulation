@@ -4,7 +4,6 @@
 #include <list>
 #include <math.h>
 
-
 /**
  * \brief  Spatial data structure for keeping track of boids and quickly working out a given boids neighbours 
  */

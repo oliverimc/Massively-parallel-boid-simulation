@@ -7,7 +7,6 @@
 #include <tuple>
 #include <random>
 
-
 using namespace Eigen;
 using namespace std;
 

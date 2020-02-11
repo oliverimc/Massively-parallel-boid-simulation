@@ -4,9 +4,6 @@
 #include <mpi.h>
 #include <vector>
 
-
-
-
 void DeSerializeBoids(vector<Boid> &boids, vector<float> &memory);
 
 void DeSerializeBoids(vector<Boid> &boids, vector<float> &memory, int start, int end);
