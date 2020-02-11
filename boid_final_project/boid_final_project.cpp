@@ -7,7 +7,6 @@
 
 #include "Eigen/Dense"
 #include <mpi.h>
-#include <iostream>
 #include <vector>
 #include <fstream>
 #include <chrono>
@@ -16,7 +15,6 @@
 
 /*! \file boid_final_project.cpp
 	\brief Main execution file with entry point
-
 */
 
 using namespace std;

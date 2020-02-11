@@ -28,7 +28,7 @@ private:
 	int GetGridVectorIndex(vector<int> &grid_index) const;
 	int GetGridVectorIndex(int &x, int &y, int &z) const;
 
-	vector<int> GetGridCoord(Boid &boid);
+	vector<int> GetGridCoord(Boid &boid) const;
 	vector<int> GetGridCoord(int &vector_index);
 
 	void AddBoid(Boid &boid);

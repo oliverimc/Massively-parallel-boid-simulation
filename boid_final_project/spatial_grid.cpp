@@ -1,15 +1,13 @@
 #include "pch.h"
 #include "spatial_grid.h"
-#include <iostream>
+
 
 /*! \file spatial_grid.cpp
 	\brief Implementation of the Spatial Grid class
-
-
 */
 
 /**
- * \brief   Creates a grid for given simulation details and adds all boids to appropriate cells
+ * \brief  Creates a grid for given simulation details and adds all boids to appropriate cells.
  * \param  boids | Boids to add to grid 
  */
 SpatialGrid::SpatialGrid(vector<Boid> &boids)
@@ -26,7 +24,8 @@ SpatialGrid::SpatialGrid(vector<Boid> &boids)
 
 
 /**
- * \brief  Updates the 27 cells around the boid so it can query them for nearby boids
+ * \brief  Updates the 27 cell buffer for a given boid.
+ *		   It can then query this for neighbours
  * \param  boid | The boid to update
  */
 void SpatialGrid::UpdateNearCells(Boid & boid)
@@ -34,7 +33,7 @@ void SpatialGrid::UpdateNearCells(Boid & boid)
 	vector<int> boid_grid_coord = boid.GetGridCoord();
 	int i = 0; 
 
-
+	//Iterates over 27 cells adjacent to cell boid currently resides in.
 	for (int x = -1; x < 2; x++)
 	{
 		for (int y = -1; y < 2; y++)
@@ -45,6 +44,8 @@ void SpatialGrid::UpdateNearCells(Boid & boid)
 				int row_y = boid_grid_coord[1] + y;
 				int row_z = boid_grid_coord[2] + z;
 
+
+				//Imposes periodic boundary conditions.
 				row_x = row_x < cell_num ? row_x : 0;
 				row_y = row_y < cell_num ? row_y : 0;
 				row_z = row_z < cell_num ? row_z : 0;
@@ -52,24 +53,20 @@ void SpatialGrid::UpdateNearCells(Boid & boid)
 				row_x = row_x > -1 ? row_x : cell_num - 1;
 				row_y = row_y > -1 ? row_y : cell_num - 1;
 				row_z = row_z > -1 ? row_z : cell_num - 1;
-
-				
+								
 				boid.neighbouring_cells_buffer_[i] = &grid[GetGridVectorIndex(row_x, row_y, row_z)];
 				i++;
-
 			}
 		}
 	}
-
-
 }
 
 /**
- * \brief   Checks if boid has moved grid cells and if so moves its pointer and stores track of changes
- *			Alters behaviour on multi-node system to avoid double adding boid when it switches cell.
+ * \brief  Checks if boid has moved grid cells and if so moves its pointer and stores track of changes.
+ *		   Alters behaviour on multi-node system to avoid double adding boid when it switches cell.
  * \param  boid | Boid to update in grid
  * \param  update_tracker | Vector that stores update information for syncing across nodes
- * \param  size | Number of nodes of system, to determine what routine to run.
+ * \param  size | Number of nodes of system to determine what routine to run.
  * \return  | Boolean indicating if the boid has moved grid cells
  */
 bool SpatialGrid::UpdateGrid(Boid & boid, vector<int>& update_tracker, int &size)
@@ -87,7 +84,6 @@ bool SpatialGrid::UpdateGrid(Boid & boid, vector<int>& update_tracker, int &size
 		
 		boid.SetGridCoord(new_grid_coord);
 		
-		
 		return true;
 	}
 
@@ -98,6 +94,10 @@ bool SpatialGrid::UpdateGrid(Boid & boid, vector<int>& update_tracker, int &size
 
 		update_tracker.push_back(old_vector_index);
 		update_tracker.push_back(new_vector_index);
+
+		//Doesn't actually do the moving yet.
+		//This will be done when it receives the updates back
+		//along with all those from other nodes from the master.
 
 		return true;
 	}
@@ -124,8 +124,8 @@ void SpatialGrid::UpdateGrid(Boid & boid, int old_vector_index, int new_vector_i
 }
 
 /**
- * \brief   Turns 3D cell co-ordinates into a 1D index so the grid can be represented
- *			by a 1D vector to guarantee contiguous memory and hence enable fast access.
+ * \brief  Turns 3D cell co-ordinates into a 1D index so the grid can be represented
+ *		   by a 1D vector to guarantee contiguous memory and hence enable fast access.
  * \param  grid_index | (x,y,z) vector that gives cells 3D grid co-ordinates 
  * \return  | 1D grid vector index of the cell
  */
@@ -135,8 +135,8 @@ int SpatialGrid::GetGridVectorIndex(vector<int>& grid_index) const
 }
 
 /**
- * \brief   Turns 3D cell co-ordinates into a 1D index so the grid can be represented
- *			by a 1D vector to guarantee contiguous memory and hence enable fast access.
+ * \brief  Turns 3D cell co-ordinates into a 1D index so the grid can be represented
+ *		   by a 1D vector to guarantee contiguous memory and hence enable fast access.
  * \param  x | Cell x co-ordinate
  * \param  y | Cell y co-ordinate 
  * \param  z | Cell z co-ordinate 
@@ -148,37 +148,36 @@ int SpatialGrid::GetGridVectorIndex(int & x, int & y, int & z) const
 }
 
 /**
- * \brief   Uses a boids position to work out which grid cell it currently is in.
+ * \brief  Uses a boids position to work out which grid cell it currently is in.
  * \param  boid | Boid to work out co-ordinates
  * \return  | Grid co-ordinates of boid
  */
-vector<int> SpatialGrid::GetGridCoord(Boid & boid)
+vector<int> SpatialGrid::GetGridCoord(Boid & boid) const
 {
-	vector<int> grid_pos(3);
+	vector<int> grid_coord(SYS_DIM);
 	
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < SYS_DIM; i++)
 	{
-		grid_pos[i] = floor(boid.GetPosition()[i] / cell_length);
+		grid_coord[i] = floor(boid.GetPosition()[i] / cell_length);
 
-		if (!(grid_pos[i] < cell_num))
+		if (!(grid_coord[i] < cell_num))
 		{
-			grid_pos[i] = cell_num - 1; // fixes issue where if boid position is exactly length floor(pos/length) out of bounds of allowed grid indexes
+			grid_coord[i] = cell_num - 1; // fixes issue where if boid position is exactly length, floor(pos/length) out of bounds of allowed grid indexes
 		}
-
 	}
 
-	return grid_pos;
+	return grid_coord;
 
 }
 
 /**
- * \brief   Converts 1D grid vector index into corresponding 3D grid cell co-ordinates
+ * \brief  Converts 1D grid vector index into corresponding 3D grid cell co-ordinates.
  * \param  vector_index | 1D Grid vector index to convert
  * \return  | Grid cell co-ordinates
  */
 vector<int> SpatialGrid::GetGridCoord(int & vector_index)
 {
-	vector<int> return_value(3);
+	vector<int> return_value(SYS_DIM);
 	return_value[0] = vector_index / (cell_num*cell_num);
 	return_value[1] = (vector_index - return_value[0] * cell_num*cell_num) / cell_num;
 	return_value[2] = vector_index - return_value[0] * cell_num*cell_num - return_value[1] * cell_num;
@@ -186,13 +185,13 @@ vector<int> SpatialGrid::GetGridCoord(int & vector_index)
 }
 
 /**
- * \brief   Finds appropriate grid cell location of a boid and adds it to the grid.
+ * \brief  Finds appropriate grid cell location of a boid and adds it to the grid.
  * \param  boid | Boid to add to the grid
  */
 void SpatialGrid::AddBoid(Boid & boid)
 {
-	vector<int> grid_index = GetGridCoord(boid);
-	int grid_vector_index = GetGridVectorIndex(grid_index);
+	vector<int> grid_coord = GetGridCoord(boid);
+	int grid_vector_index = GetGridVectorIndex(grid_coord);
 	grid[grid_vector_index].push_back(&boid);
-	boid.SetGridCoord(grid_index);
+	boid.SetGridCoord(grid_coord);
 }
