@@ -2,7 +2,7 @@
 #include "single_node.h"
 
 /*! \file single_node.cpp
-	\brief Implementation of the simulation for running on a single node
+	\brief Implementation of the simulation for running on a single node.
 */
 
 using namespace std;
