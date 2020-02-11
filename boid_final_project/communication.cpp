@@ -81,7 +81,7 @@ void BroadcastSendBoids(vector<Boid>& boids, vector<float>& memory, int rank)
  * \brief    MPI broadcast operation integrated with deserialization routine
  *			 allowing to node to receive a broadcast of boids from other nodes
  * \param  boids | Boid vector to receive to
- * \param  memory |  Intermediary float vector for MPI to broadcast to
+ * \param  memory | Intermediary float vector for MPI to broadcast to
  * \param  rank | MPI Broadcast rank to receive from
  */
 void BroadcastReceiveBoids(vector<Boid>& boids, vector<float>& memory, int rank)

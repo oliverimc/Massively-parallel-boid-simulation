@@ -8,7 +8,7 @@
 #include "Eigen/Dense"
 #include <mpi.h>
 #include <iostream>
-#include<vector>
+#include <vector>
 #include <fstream>
 #include <chrono>
 #include <ctime>
@@ -22,10 +22,8 @@
 using namespace std;
 using namespace Eigen;
 
-
-
 /**
- * \brief Saves the boid simulation data (positions for each step) to a file
+ * \brief Saves the boid simulation data (positions for each step) to a file.
  * \param name | What to name the file
  * \param paths | Vector of positions of each boid for every time step
  * \param steps | How many steps of data there are in the vector
@@ -40,15 +38,12 @@ void WriteToFile(string name, vector<Vector3f> &paths, int steps, int boid_numbe
 	auto now = chrono::system_clock::now();
 	auto now_time = std::chrono::system_clock::to_time_t(now);
 
-	
 	file << "Boid Simulation Output Results:" << endl;
 	file << "Time of Simulation: " << ctime(&now_time) << endl;
 	file << "Number of Boids: " << BOID_NUMBER << endl;
 	file << "Size of Simulation Area: " << LENGTH << endl;
 	file << "Number of Simulation Steps: " << STEPS << endl;
 	file << endl;
-
-
 
 	for (int step = 0; step < steps; step++)
 	{
@@ -75,48 +70,31 @@ void WriteToFile(string name, vector<Vector3f> &paths, int steps, int boid_numbe
 	}
 
 	file.close();
-
-
+	
 }
-
-
 
 
 int main(int argc, char* argv[])
 {
-
-
-
-	int num_nodes, rank, namelen;
-	char processor_name[MPI_MAX_PROCESSOR_NAME];
-	
+	int num_nodes, rank;
 	MPI_Init(&argc, &argv);
 	MPI_Comm_size(MPI_COMM_WORLD, &num_nodes);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-	MPI_Get_processor_name(processor_name, &namelen);
-
-
-
+	
 	omp_set_num_threads(THREAD_NUM);	
 	
 	if (num_nodes == 1)
 	{
-
 		vector<Vector3f> paths = run_single();
 		if (SAVE) 
 		{
 			WriteToFile("50-run", paths, STEPS, BOID_NUMBER);
 		}
-
-		
-
 	}
 
 	else if(rank == MASTER)
-
 	{
 		vector<Vector3f> paths = run_master(rank, num_nodes);
-		
 		if (SAVE)
 		{
 			WriteToFile("multi-node-0", paths, STEPS, BOID_NUMBER/num_nodes+BOID_NUMBER%num_nodes);
@@ -126,18 +104,11 @@ int main(int argc, char* argv[])
 	else
 	{
 		vector<Vector3f> paths = run_worker(rank, num_nodes);
-
 		if (SAVE)
 		{
 			WriteToFile("multi-node-"+to_string(rank), paths, STEPS, BOID_NUMBER / num_nodes);
 		}
-
 	}
-
-
-
-
-
-
+	   	  
 	MPI_Finalize();
 }

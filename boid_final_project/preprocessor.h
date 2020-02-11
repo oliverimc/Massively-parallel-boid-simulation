@@ -80,16 +80,16 @@ constexpr auto SEPARATION_FACTOR = 1.05;
 #define SCHEDULE guided
 /**
  * \brief  Multi-dimensional indexing of 1D paths vector 
- * \param  boid | boid index
- * \param  step | step index
- * \param  boid_number |  number of boids stored in the vector
+ * \param  boid | Boid index
+ * \param  step | Step index
+ * \param  boid_number | Number of boids stored in the vector
  */
 #define PathIndice(boid,step,boid_number) step*boid_number+boid
 /**
  * \brief  Multi-dimensional indexing of 1D paths vector for a selection of boids (ie a nodes share of the work).
- * \param  boid | boid index
- * \param  step | step index
- * \param  boid_number | number of boids stored in the vector
- * \param  start | boid index for the start of the section of the vector the node is responsible for.
+ * \param  boid | Boid index
+ * \param  step | Step index
+ * \param  boid_number | Number of boids stored in the vector
+ * \param  start | Boid index for the start of the section of the vector the node is responsible for.
  */
 #define MultiPathIndice(boid,step,boid_number,start) step*boid_number+(boid-start)
