@@ -5,8 +5,7 @@
 #include "communication.h"
 #include "Eigen/Dense"
 #include <vector>
-#include <iostream>
-#include <cmath>
+#include <math.h>
 #include <cstdio>
 
 vector<Vector3f> run_worker(int rank, int size);

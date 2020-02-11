@@ -6,11 +6,6 @@
 #include <list>
 #include <tuple>
 #include <random>
-#include <iostream>
-
-
-
-
 
 
 using namespace Eigen;

@@ -5,11 +5,9 @@
 #include "communication.h"
 #include "Eigen/Dense"
 #include <vector>
-#include <iostream>
 #include <random>
-#include <cmath>
+#include <math.h>
 #include <cstdio>
-#include <fstream>
 
 
 vector<Vector3f> run_master(int rank, int size);
