@@ -247,6 +247,7 @@ Vector3f Boid::Separation(vector<tuple<Boid*, float>>& nearby_boids)
 		}
 
 	}
+	
 	return correction_force;
 
 }
@@ -287,12 +288,7 @@ Vector3f Boid::Alignment(vector<tuple<Boid*, float>>& nearby_boids)
 		}
 
 	}
-
+	
 	return correction_force;
 
-
-
-
 }
-
-
