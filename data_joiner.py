@@ -1,6 +1,8 @@
 from sys import argv
 import glob
 
+#number of lines
+
 head_length =7
 
 if(len(argv)==3):
