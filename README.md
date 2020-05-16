@@ -10,4 +10,4 @@
 
 ## Example Output 
 
-[![Demo CountPages alpha](https://j.gifs.com/XL93zl.gif)](https://www.youtube.com/watch?v=DLk9l84_rzI)
+[![Boid Output](https://j.gifs.com/XL93zl.gif)](https://www.youtube.com/watch?v=DLk9l84_rzI)
