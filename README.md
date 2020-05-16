@@ -5,3 +5,6 @@
  For multiple nodes data outputted acorss many files, datajoiner.py can be used to turn into one file.
  
  Also includes simplified CUDA version for GPU execution.
+
+
+[![Demo CountPages alpha](https://j.gifs.com/XL93zl.gif)](https://www.youtube.com/watch?v=DLk9l84_rzI)
