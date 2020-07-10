@@ -5,8 +5,6 @@
  For multiple nodes data outputted acorss many files, datajoiner.py can be used to turn into one file.
  
  Simulation viusalised using custom unity project, not uploaded here.
- 
- Also includes simplified CUDA version for GPU execution.
 
 ## Example Output 
 
